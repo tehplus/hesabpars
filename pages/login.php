@@ -1,4 +1,6 @@
 <?php
+require_once '../includes/db.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $username = clean($_POST['username'] ?? '');

@@ -582,3 +582,7 @@
 [2025-05-01 19:32:57] Error [8] session_start(): Ignoring session_start() because a session is already active on line 22 in file C:\xampp\htdocs\hesabpars\index.php
 [2025-05-01 19:32:57] Error [8] session_start(): Ignoring session_start() because a session is already active on line 22 in file C:\xampp\htdocs\hesabpars\index.php
 [2025-05-01 19:32:57] Error [2] require_once(../includes/config.php): Failed to open stream: No such file or directory on line 6 in file C:\xampp\htdocs\hesabpars\pages\login.php
+[2025-05-01 22:45:45] Error [2] require_once(../includes/db.php): Failed to open stream: No such file or directory on line 2 in file C:\xampp\htdocs\hesabpars\pages\login.php
+[2025-05-01 22:45:51] Error [2] require_once(../includes/db.php): Failed to open stream: No such file or directory on line 2 in file C:\xampp\htdocs\hesabpars\pages\login.php
+[2025-05-01 22:45:54] Error [2] require_once(../includes/db.php): Failed to open stream: No such file or directory on line 2 in file C:\xampp\htdocs\hesabpars\pages\login.php
+[2025-05-01 22:45:58] Error [2] require_once(../includes/db.php): Failed to open stream: No such file or directory on line 2 in file C:\xampp\htdocs\hesabpars\pages\login.php

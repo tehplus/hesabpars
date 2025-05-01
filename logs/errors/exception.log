@@ -1,1 +1,5 @@
 [2025-05-01 19:32:57] Exception: Failed opening required '../includes/config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php on line 6
+[2025-05-01 22:45:45] Exception: Failed opening required '../includes/db.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php on line 2
+[2025-05-01 22:45:51] Exception: Failed opening required '../includes/db.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php on line 2
+[2025-05-01 22:45:54] Exception: Failed opening required '../includes/db.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php on line 2
+[2025-05-01 22:45:58] Exception: Failed opening required '../includes/db.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php on line 2
