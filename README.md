@@ -2,10 +2,9 @@
 
 کد ناقص اومد. ادامشو بنویس. تا اینجا نوشتی.
 
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">قیمت نهایی با مالیات</label>
-                                <input type="number" class="form-control" id="final_price" readonly>
+<!-- محتوای اصلی صفحه -->
+            <div class="content">
+                <div class="container-fluid">
 
 
 از همینجا به بعدشو بنویس. از اول ننویسی

@@ -1,0 +1,1 @@
+[2025-05-01 19:32:57] Exception: Failed opening required '../includes/config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php on line 6
