@@ -338,3 +338,8 @@
 [01-May-2025 11:55:33 Asia/Tehran] Error [2] Undefined variable $db on line 6 in file C:\xampp\htdocs\hesabpars\database\insert_defaults.php
 [01-May-2025 11:55:33 Asia/Tehran] PHP Warning:  Undefined variable $db in C:\xampp\htdocs\hesabpars\database\insert_defaults.php on line 6
 [01-May-2025 11:55:33 Asia/Tehran] Uncaught Exception: Call to a member function query() on null
+[01-May-2025 13:21:12 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 13:21:23 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 16:29:18 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:05:38 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:10:42 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
