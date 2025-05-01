@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 // لود کردن فایل‌های اصلی
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
-require_once 'includes/db.php'; // از db.php استفاده می‌کنیم چون Singleton رو پیاده‌سازی کرده
+require_once 'includes/db.php';
 require_once 'includes/auth.php';
 
 // شروع سشن
@@ -17,36 +17,107 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// بررسی مسیر درخواستی
-$request = $_SERVER['REQUEST_URI'];
-$path = str_replace(BASE_URL, '', $request);
-$path = strtok($path, '?'); // حذف query string
+// بررسی صفحه درخواستی
+$page = $_GET['page'] ?? '';
 
 // مسیریابی
-switch ($path) {
+switch ($page) {
     case '':
-    case '/':
-    case '/index.php':
-    case '/login':
-    case '/login.php':
+    case 'login':
         require_once 'pages/login.php';
         break;
         
-    case '/register':
-    case '/register.php':
+    case 'register':
         require_once 'pages/register.php';
         break;
         
-    case '/dashboard':
-    case '/dashboard.php':
+    case 'dashboard':
         if (!isLoggedIn()) {
-            header("Location: " . BASE_URL . "/login");
+            header("Location: index.php?page=login");
             exit;
         }
         require_once 'pages/dashboard.php';
         break;
-        
+
+    case 'products':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/products.php';
+        break;
+
+    case 'add-product':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/add-product.php';
+        break;
+
+    case 'categories':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/categories.php';
+        break;
+
+    case 'inventory':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/inventory.php';
+        break;
+
+    case 'inventory-transactions':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/inventory-transactions.php';
+        break;
+
+    case 'sales':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/sales.php';
+        break;
+
+    case 'add-sale':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/add-sale.php';
+        break;
+
+    case 'profile':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/profile.php';
+        break;
+
+    case 'users':
+        if (!isLoggedIn()) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+        require_once 'pages/users.php';
+        break;
+
+    case 'logout':
+        session_destroy();
+        header("Location: index.php?page=login");
+        exit;
+        break;
+
     default:
-        header("Location: " . BASE_URL . "/login");
+        header("Location: index.php?page=login");
         exit;
 }

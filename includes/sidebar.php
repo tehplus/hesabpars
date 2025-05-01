@@ -16,13 +16,12 @@ function isActive($path) {
     return (strpos($current_path, $path) !== false) ? 'active' : '';
 }
 ?>
-
-<!-- شروع سایدبار -->
+<!-- سایدبار -->
 <div class="sidebar">
     <!-- هدر سایدبار با لوگو -->
     <div class="sidebar-header">
         <div class="logo-box">
-            <img src="<?php echo asset('images/logo.png'); ?>" alt="<?php echo SITE_NAME; ?>" class="logo">
+            <img src="assets/images/logo.png" alt="<?php echo SITE_NAME; ?>" class="logo">
         </div>
         <button id="sidebar-toggle" class="sidebar-toggle">
             <i class="fas fa-chevron-right"></i>
@@ -34,7 +33,7 @@ function isActive($path) {
         <ul class="menu-items">
             <!-- داشبورد -->
             <li class="menu-item <?php echo isActive('dashboard'); ?>">
-                <a href="<?php echo url('dashboard'); ?>" class="menu-link">
+                <a href="index.php?page=dashboard" class="menu-link">
                     <i class="fas fa-home"></i>
                     <span>داشبورد</span>
                 </a>
@@ -49,19 +48,19 @@ function isActive($path) {
                 </a>
                 <ul class="submenu">
                     <li class="<?php echo isActive('products/list'); ?>">
-                        <a href="<?php echo url('products/list'); ?>">
+                        <a href="index.php?page=products">
                             <i class="fas fa-list"></i>
                             <span>لیست محصولات</span>
                         </a>
                     </li>
                     <li class="<?php echo isActive('products/add'); ?>">
-                        <a href="<?php echo url('products/add'); ?>">
+                        <a href="index.php?page=add-product">
                             <i class="fas fa-plus"></i>
                             <span>افزودن محصول</span>
                         </a>
                     </li>
                     <li class="<?php echo isActive('products/categories'); ?>">
-                        <a href="<?php echo url('products/categories'); ?>">
+                        <a href="index.php?page=categories">
                             <i class="fas fa-tags"></i>
                             <span>دسته‌بندی‌ها</span>
                         </a>
@@ -78,13 +77,13 @@ function isActive($path) {
                 </a>
                 <ul class="submenu">
                     <li class="<?php echo isActive('inventory/stock'); ?>">
-                        <a href="<?php echo url('inventory/stock'); ?>">
+                        <a href="index.php?page=inventory">
                             <i class="fas fa-boxes"></i>
                             <span>موجودی انبار</span>
                         </a>
                     </li>
                     <li class="<?php echo isActive('inventory/transactions'); ?>">
-                        <a href="<?php echo url('inventory/transactions'); ?>">
+                        <a href="index.php?page=inventory-transactions">
                             <i class="fas fa-exchange-alt"></i>
                             <span>گردش انبار</span>
                         </a>
@@ -101,67 +100,15 @@ function isActive($path) {
                 </a>
                 <ul class="submenu">
                     <li class="<?php echo isActive('sales/list'); ?>">
-                        <a href="<?php echo url('sales/list'); ?>">
+                        <a href="index.php?page=sales">
                             <i class="fas fa-list"></i>
                             <span>لیست فروش</span>
                         </a>
                     </li>
                     <li class="<?php echo isActive('sales/add'); ?>">
-                        <a href="<?php echo url('sales/add'); ?>">
+                        <a href="index.php?page=add-sale">
                             <i class="fas fa-plus"></i>
                             <span>فروش جدید</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <!-- مشتریان -->
-            <li class="menu-item has-submenu">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-users"></i>
-                    <span>مشتریان</span>
-                    <i class="fas fa-angle-left submenu-arrow"></i>
-                </a>
-                <ul class="submenu">
-                    <li class="<?php echo isActive('customers/list'); ?>">
-                        <a href="<?php echo url('customers/list'); ?>">
-                            <i class="fas fa-list"></i>
-                            <span>لیست مشتریان</span>
-                        </a>
-                    </li>
-                    <li class="<?php echo isActive('customers/add'); ?>">
-                        <a href="<?php echo url('customers/add'); ?>">
-                            <i class="fas fa-user-plus"></i>
-                            <span>مشتری جدید</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <!-- گزارشات -->
-            <li class="menu-item has-submenu">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>گزارشات</span>
-                    <i class="fas fa-angle-left submenu-arrow"></i>
-                </a>
-                <ul class="submenu">
-                    <li class="<?php echo isActive('reports/sales'); ?>">
-                        <a href="<?php echo url('reports/sales'); ?>">
-                            <i class="fas fa-chart-line"></i>
-                            <span>گزارش فروش</span>
-                        </a>
-                    </li>
-                    <li class="<?php echo isActive('reports/inventory'); ?>">
-                        <a href="<?php echo url('reports/inventory'); ?>">
-                            <i class="fas fa-box"></i>
-                            <span>گزارش انبار</span>
-                        </a>
-                    </li>
-                    <li class="<?php echo isActive('reports/customers'); ?>">
-                        <a href="<?php echo url('reports/customers'); ?>">
-                            <i class="fas fa-users"></i>
-                            <span>گزارش مشتریان</span>
                         </a>
                     </li>
                 </ul>
@@ -176,45 +123,28 @@ function isActive($path) {
                 </a>
                 <ul class="submenu">
                     <li class="<?php echo isActive('settings/profile'); ?>">
-                        <a href="<?php echo url('settings/profile'); ?>">
+                        <a href="index.php?page=profile">
                             <i class="fas fa-user-cog"></i>
                             <span>پروفایل</span>
                         </a>
                     </li>
                     <li class="<?php echo isActive('settings/users'); ?>">
-                        <a href="<?php echo url('settings/users'); ?>">
+                        <a href="index.php?page=users">
                             <i class="fas fa-users-cog"></i>
                             <span>کاربران</span>
                         </a>
                     </li>
-                    <li class="<?php echo isActive('settings/backup'); ?>">
-                        <a href="<?php echo url('settings/backup'); ?>">
-                            <i class="fas fa-database"></i>
-                            <span>پشتیبان‌گیری</span>
-                        </a>
-                    </li>
                 </ul>
             </li>
-        </ul>
-    </div>
 
-    <!-- فوتر سایدبار -->
-    <div class="sidebar-footer">
-        <div class="user-box">
-            <img src="<?php echo asset('images/avatar.png'); ?>" alt="تصویر کاربر" class="user-avatar">
-            <div class="user-info">
-                <h5><?php echo $_SESSION['user_full_name'] ?? 'کاربر'; ?></h5>
-                <p><?php echo $_SESSION['user_role'] ?? 'کاربر عادی'; ?></p>
-            </div>
-        </div>
-        <div class="footer-actions">
-            <a href="<?php echo url('settings/profile'); ?>" title="تنظیمات">
-                <i class="fas fa-cog"></i>
-            </a>
-            <a href="<?php echo url('auth/logout'); ?>" title="خروج">
-                <i class="fas fa-sign-out-alt"></i>
-            </a>
-        </div>
+            <!-- خروج -->
+            <li class="menu-item">
+                <a href="index.php?page=logout" class="menu-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>خروج</span>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
 

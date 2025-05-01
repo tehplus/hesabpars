@@ -28,8 +28,24 @@ define('LOG_PATH', __DIR__ . '/../logs');
 
 // تنظیمات منطقه‌ای
 date_default_timezone_set('Asia/Tehran');
+// مسیرها
+define('UPLOADS_PATH', __DIR__ . '/../uploads');  // تغییر از UPLOAD_PATH به UPLOADS_PATH
+define('LOGS_PATH', __DIR__ . '/../logs');        // تغییر از LOG_PATH به LOGS_PATH 
+define('CACHE_PATH', __DIR__ . '/../cache');      // اضافه کردن CACHE_PATH
+define('INCLUDES_PATH', __DIR__);                 // اضافه کردن INCLUDES_PATH
 
-// اتصال به دیتابیس
+// تنظیمات محیط برنامه
+define('APP_ENV', 'development'); // یا 'production' در سرور اصلی
+define('IS_HTTPS', false);        // در سرور اصلی true میشه
+define('DEFAULT_TIMEZONE', 'Asia/Tehran');
+define('DEFAULT_CHARSET', 'UTF-8');
+define('SESSION_SAME_SITE', 'Lax');
+define('SESSION_NAME', 'HESABPARS_SESSID');
+
+// مسیرها (نام‌های فعلی حفظ میشه)
+define('UPLOAD_PATH', __DIR__ . '/../uploads');
+define('LOG_PATH', __DIR__ . '/../logs');
+// // اتصال به دیتابیس
 try {
     $db = new PDO(
         "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
