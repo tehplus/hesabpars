@@ -1,5 +1,5 @@
-# تنظیمات پایه Apache برای پروژه حساب پارسه
-# Current Date: 2025-05-01 15:40:47
+# تنظیمات Apache برای پروژه حساب پارسه
+# Current Date: 2025-05-01 15:47:17
 # Current User: tehplus
 
 # فعال کردن موتور بازنویسی
@@ -11,18 +11,55 @@ RewriteBase /hesabpars/
 # جلوگیری از دسترسی به دایرکتوری‌ها
 Options -Indexes
 
+# تنظیم MIME Types
+AddType application/javascript .js
+AddType text/css .css
+AddType image/svg+xml .svg
+AddType application/x-font-ttf .ttf
+AddType application/x-font-woff .woff
+AddType application/font-woff2 .woff2
+
+# کش کردن فایل‌های استاتیک
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# فشرده‌سازی
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+</IfModule>
+
+# ریدایرکت درخواست‌ها
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
 # حفاظت از فایل‌های حساس
 <FilesMatch "^\.">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# تنظیم صفحه خطای 404
-ErrorDocument 404 /hesabpars/pages/404.php
+# امنیت دایرکتوری uploads
+<Directory "/uploads">
+    Options -ExecCGI
+    RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8
+    RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8
+    <FilesMatch "(?i)\.(php|php3?|phtml|php5|php7|php8)$">
+        Order Deny,Allow
+        Deny from all
+    </FilesMatch>
+</Directory>
 
-# اجازه دسترسی به فایل‌های موجود
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# ریدایرکت درخواست‌ها
-RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+# امنیت دایرکتوری logs
+<Directory "/logs">
+    Order deny,allow
+    Deny from all
+</Directory>

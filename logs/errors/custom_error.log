@@ -557,3 +557,14 @@
 2025-05-01 19:17:09 Error [8] session_start(): Ignoring session_start() because a session is already active on line 22 in file C:\xampp\htdocs\hesabpars\index.php
 2025-05-01 19:17:09 Error [2] require_once(pages/404.php): Failed to open stream: No such file or directory on line 63 in file C:\xampp\htdocs\hesabpars\index.php
 2025-05-01 19:17:09 Exception: Failed opening required 'pages/404.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\index.php on line 63
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 192 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 193 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 194 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 195 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 196 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 192 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 193 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 194 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 195 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [2] ini_set(): Session ini settings cannot be changed when a session is active on line 196 in file C:\xampp\htdocs\hesabpars\includes\config.php
+[2025-05-01 19:18:41] Error [8] session_start(): Ignoring session_start() because a session is already active on line 22 in file C:\xampp\htdocs\hesabpars\index.php
