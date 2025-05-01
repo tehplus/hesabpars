@@ -1,4 +1,5 @@
 <?php
+
 // تعریف مسیر اصلی برنامه
 define('BASE_PATH', __DIR__);
 
@@ -6,17 +7,17 @@ define('BASE_PATH', __DIR__);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// لود کردن فایل‌های اصلی
-require_once 'includes/config.php';
-require_once 'includes/functions.php';
-require_once 'includes/db.php';
-require_once 'includes/auth.php';
-
+// لود کردن فایل‌های اصلی یکبار
+require_once 'includes/config.php';     // اول config لود میشه
+require_once 'includes/functions.php';   // بعد functions
+require_once 'includes/init.php';        // بعد init که شامل تنظیمات اصلی هست
+require_once 'includes/auth.php';        // و در نهایت auth
 // شروع سشن
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
+// بررسی صفحه درخواستی
+$page = $_GET['page'] ?? '';
 // بررسی صفحه درخواستی
 $page = $_GET['page'] ?? '';
 
