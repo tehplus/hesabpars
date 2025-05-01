@@ -1,380 +1,306 @@
 <?php
 /**
- * کلاس مدیریت دیتابیس
+ * کلاس مدیریت کاربران و احراز هویت
  * 
- * Current Date: 2025-05-01 16:12:24
+ * این کلاس مسئول:
+ * - ثبت‌نام کاربران
+ * - ورود و خروج
+ * - مدیریت نشست‌ها
+ * - بررسی دسترسی‌ها
+ * 
+ * Current Date: 2025-05-01 16:50:43
  * Current User: tehplus
- * 
- * @package HesabPars
- * @subpackage Database
- * @version 1.0.0
  */
 
-// جلوگیری از دسترسی مستقیم به فایل
+// جلوگیری از دسترسی مستقیم
 if (!defined('BASE_PATH')) {
     die('دسترسی مستقیم به این فایل مجاز نیست.');
 }
 
-class Database {
-    /**
-     * @var PDO نمونه اتصال به دیتابیس
-     */
-    private $connection;
-
-    /**
-     * @var PDOStatement آخرین کوئری اجرا شده
-     */
-    private $statement;
-
-    /**
-     * @var array آرایه‌ای از تنظیمات اتصال
-     */
-    private $options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_persian_ci"
-    ];
-
-    /**
-     * @var array آرایه‌ای از کوئری‌های کش شده
-     */
-    private $queryCache = [];
-
-    /**
-     * @var array آرایه‌ای از تراکنش‌های فعال
-     */
-    private $transactions = [];
-
-    /**
-     * @var int تعداد کوئری‌های اجرا شده
-     */
-    private $queryCount = 0;
-
-    /**
-     * @var float زمان کل اجرای کوئری‌ها
-     */
-    private $queryTime = 0;
+class Auth {
+    // دیتابیس
+    private $db;
+    
+    // کاربر جاری
+    private $currentUser = null;
+    
+    // پیام‌های خطا
+    private $errors = [];
 
     /**
      * سازنده کلاس
      * 
-     * @param string $host هاست دیتابیس
-     * @param string $dbname نام دیتابیس
-     * @param string $username نام کاربری
-     * @param string $password رمز عبور
-     * @throws PDOException
+     * @param Database $db
      */
-    public function __construct($host, $dbname, $username, $password) {
-        try {
-            $dsn = "mysql:host={$host};dbname={$dbname};charset=utf8mb4";
-            $this->connection = new PDO($dsn, $username, $password, $this->options);
-            
-            // غیرفعال کردن auto-commit
-            $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
-            
-        } catch (PDOException $e) {
-            $this->logError('خطا در اتصال به دیتابیس: ' . $e->getMessage());
-            throw new PDOException('خطا در اتصال به دیتابیس');
+    public function __construct($db) {
+        $this->db = $db;
+        $this->startSession();
+        $this->loadCurrentUser();
+    }
+
+    /**
+     * راه‌اندازی session
+     */
+    private function startSession() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_name(SESSION_NAME);
+            session_start();
         }
     }
 
     /**
-     * اجرای یک کوئری با پارامترهای امن
-     * 
-     * @param string $query کوئری SQL
-     * @param array $params پارامترهای کوئری
-     * @return PDOStatement
-     * @throws PDOException
+     * بارگذاری کاربر جاری
      */
-    public function query($query, $params = []) {
-        $start = microtime(true);
-        
-        try {
-            $this->statement = $this->connection->prepare($query);
-            $this->statement->execute($params);
-            
-            $this->queryCount++;
-            $this->queryTime += microtime(true) - $start;
-            
-            if (DEBUG_MODE) {
-                $this->logQuery($query, $params, $this->queryTime);
+    private function loadCurrentUser() {
+        if (isset($_SESSION['user_id'])) {
+            $query = "SELECT * FROM users WHERE id = ? AND status = 'active' LIMIT 1";
+            $this->currentUser = $this->db->getRow($query, [$_SESSION['user_id']]);
+
+            if (!$this->currentUser) {
+                $this->logout();
             }
-            
-            return $this->statement;
-            
-        } catch (PDOException $e) {
-            $this->logError('خطا در اجرای کوئری: ' . $e->getMessage(), [
-                'query' => $query,
-                'params' => $params
-            ]);
-            throw new PDOException('خطا در اجرای کوئری');
         }
     }
 
     /**
-     * دریافت یک رکورد
+     * ثبت‌نام کاربر جدید
      * 
-     * @param string $query کوئری SQL
-     * @param array $params پارامترهای کوئری
-     * @return array|false
+     * @param array $data اطلاعات کاربر
+     * @return bool|int
      */
-    public function getRow($query, $params = []) {
-        return $this->query($query, $params)->fetch();
+    public function register($data) {
+        // بررسی داده‌های ورودی
+        if (empty($data['email']) || empty($data['password'])) {
+            $this->errors[] = 'ایمیل و رمز عبور الزامی است';
+            return false;
+        }
+
+        // بررسی فرمت ایمیل
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $this->errors[] = 'ایمیل نامعتبر است';
+            return false;
+        }
+
+        // بررسی طول رمز عبور
+        if (strlen($data['password']) < PASSWORD_MIN_LENGTH) {
+            $this->errors[] = 'رمز عبور باید حداقل ' . PASSWORD_MIN_LENGTH . ' کاراکتر باشد';
+            return false;
+        }
+
+        // بررسی تکراری بودن ایمیل
+        $query = "SELECT COUNT(*) FROM users WHERE email = ?";
+        if ($this->db->getRow($query, [$data['email']])) {
+            $this->errors[] = 'این ایمیل قبلاً ثبت شده است';
+            return false;
+        }
+
+        try {
+            $this->db->beginTransaction();
+
+            // آماده‌سازی داده‌ها
+            $userData = [
+                'email' => $data['email'],
+                'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+                'name' => $data['name'] ?? '',
+                'status' => 'active',
+                'role' => 'user',
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            // درج کاربر
+            $userId = $this->db->insert('users', $userData);
+
+            $this->db->commit();
+            return $userId;
+
+        } catch (Exception $e) {
+            $this->db->rollback();
+            $this->errors[] = 'خطا در ثبت‌نام: ' . $e->getMessage();
+            return false;
+        }
     }
 
     /**
-     * دریافت همه رکوردها
+     * ورود کاربر
      * 
-     * @param string $query کوئری SQL
-     * @param array $params پارامترهای کوئری
+     * @param string $email ایمیل
+     * @param string $password رمز عبور
+     * @return bool
+     */
+    public function login($email, $password) {
+        // بررسی داده‌های ورودی
+        if (empty($email) || empty($password)) {
+            $this->errors[] = 'ایمیل و رمز عبور الزامی است';
+            return false;
+        }
+
+        // دریافت اطلاعات کاربر
+        $query = "SELECT * FROM users WHERE email = ? AND status = 'active' LIMIT 1";
+        $user = $this->db->getRow($query, [$email]);
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            $this->errors[] = 'ایمیل یا رمز عبور اشتباه است';
+            return false;
+        }
+
+        // ذخیره در session
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_role'] = $user['role'];
+        $_SESSION['last_login'] = time();
+
+        // بروزرسانی آخرین ورود
+        $this->db->update('users', 
+            ['last_login' => date('Y-m-d H:i:s')],
+            'id = ?',
+            [$user['id']]
+        );
+
+        $this->currentUser = $user;
+        return true;
+    }
+
+    /**
+     * خروج کاربر
+     */
+    public function logout() {
+        // پاک کردن متغیرهای session
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_role']);
+        unset($_SESSION['last_login']);
+
+        // پاک کردن اطلاعات کاربر
+        $this->currentUser = null;
+
+        // نابود کردن session
+        session_destroy();
+    }
+
+    /**
+     * بررسی لاگین بودن کاربر
+     * 
+     * @return bool
+     */
+    public function isLoggedIn() {
+        return $this->currentUser !== null;
+    }
+
+    /**
+     * دریافت اطلاعات کاربر جاری
+     * 
+     * @return array|null
+     */
+    public function getCurrentUser() {
+        return $this->currentUser;
+    }
+
+    /**
+     * بررسی نقش کاربر
+     * 
+     * @param string $role نقش مورد نظر
+     * @return bool
+     */
+    public function hasRole($role) {
+        return $this->isLoggedIn() && $this->currentUser['role'] === $role;
+    }
+
+    /**
+     * بررسی دسترسی به صفحه
+     * 
+     * @param string $page صفحه مورد نظر
+     * @return bool
+     */
+    public function hasAccess($page) {
+        // اگر کاربر لاگین نیست
+        if (!$this->isLoggedIn()) {
+            return false;
+        }
+
+        // اگر کاربر ادمین است
+        if ($this->hasRole('admin')) {
+            return true;
+        }
+
+        // دسترسی‌های پیش‌فرض
+        $defaultAccess = [
+            'dashboard' => ['user', 'admin'],
+            'profile' => ['user', 'admin'],
+            'reports' => ['user', 'admin']
+        ];
+
+        // بررسی دسترسی
+        return isset($defaultAccess[$page]) && 
+               in_array($this->currentUser['role'], $defaultAccess[$page]);
+    }
+
+    /**
+     * بروزرسانی پروفایل
+     * 
+     * @param array $data اطلاعات جدید
+     * @return bool
+     */
+    public function updateProfile($data) {
+        if (!$this->isLoggedIn()) {
+            $this->errors[] = 'ابتدا وارد شوید';
+            return false;
+        }
+
+        try {
+            $this->db->beginTransaction();
+
+            $updateData = [];
+
+            // بروزرسانی نام
+            if (isset($data['name'])) {
+                $updateData['name'] = $data['name'];
+            }
+
+            // بروزرسانی رمز عبور
+            if (!empty($data['password'])) {
+                if (strlen($data['password']) < PASSWORD_MIN_LENGTH) {
+                    $this->errors[] = 'رمز عبور باید حداقل ' . PASSWORD_MIN_LENGTH . ' کاراکتر باشد';
+                    return false;
+                }
+                $updateData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+
+            if (!empty($updateData)) {
+                $updateData['updated_at'] = date('Y-m-d H:i:s');
+
+                $this->db->update('users', 
+                    $updateData,
+                    'id = ?',
+                    [$this->currentUser['id']]
+                );
+
+                // بروزرسانی اطلاعات کاربر
+                $this->loadCurrentUser();
+            }
+
+            $this->db->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $this->db->rollback();
+            $this->errors[] = 'خطا در بروزرسانی پروفایل: ' . $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * دریافت خطاها
+     * 
      * @return array
      */
-    public function getRows($query, $params = []) {
-        return $this->query($query, $params)->fetchAll();
+    public function getErrors() {
+        return $this->errors;
     }
 
     /**
-     * دریافت یک مقدار
-     * 
-     * @param string $query کوئری SQL
-     * @param array $params پارامترهای کوئری
-     * @return mixed
+     * پاک کردن خطاها
      */
-    public function getValue($query, $params = []) {
-        return $this->query($query, $params)->fetchColumn();
+    public function clearErrors() {
+        $this->errors = [];
     }
-
-    /**
-     * درج یک رکورد
-     * 
-     * @param string $table نام جدول
-     * @param array $data داده‌های رکورد
-     * @return int|false
-     */
-    public function insert($table, $data) {
-        $fields = array_keys($data);
-        $values = array_fill(0, count($fields), '?');
-        
-        $query = sprintf(
-            "INSERT INTO %s (%s) VALUES (%s)",
-            $table,
-            implode(', ', $fields),
-            implode(', ', $values)
-        );
-        
-        $this->query($query, array_values($data));
-        return $this->connection->lastInsertId();
-    }
-
-    /**
-     * بروزرسانی رکورد
-     * 
-     * @param string $table نام جدول
-     * @param array $data داده‌های جدید
-     * @param string $where شرط بروزرسانی
-     * @param array $params پارامترهای شرط
-     * @return int تعداد رکوردهای تغییر یافته
-     */
-    public function update($table, $data, $where, $params = []) {
-        $sets = array_map(function($field) {
-            return "{$field} = ?";
-        }, array_keys($data));
-        
-        $query = sprintf(
-            "UPDATE %s SET %s WHERE %s",
-            $table,
-            implode(', ', $sets),
-            $where
-        );
-        
-        $params = array_merge(array_values($data), $params);
-        $this->query($query, $params);
-        
-        return $this->statement->rowCount();
-    }
-
-    /**
-     * حذف رکورد
-     * 
-     * @param string $table نام جدول
-     * @param string $where شرط حذف
-     * @param array $params پارامترهای شرط
-     * @return int تعداد رکوردهای حذف شده
-     */
-    public function delete($table, $where, $params = []) {
-        $query = sprintf("DELETE FROM %s WHERE %s", $table, $where);
-        $this->query($query, $params);
-        return $this->statement->rowCount();
-    }
-
-    /**
-     * شروع تراکنش
-     * 
-     * @return bool
-     */
-    public function beginTransaction() {
-        try {
-            return $this->connection->beginTransaction();
-        } catch (PDOException $e) {
-            $this->logError('خطا در شروع تراکنش: ' . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * تایید تراکنش
-     * 
-     * @return bool
-     */
-    public function commit() {
-        try {
-            return $this->connection->commit();
-        } catch (PDOException $e) {
-            $this->logError('خطا در تایید تراکنش: ' . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * برگشت تراکنش
-     * 
-     * @return bool
-     */
-    public function rollback() {
-        try {
-            return $this->connection->rollBack();
-        } catch (PDOException $e) {
-            $this->logError('خطا در برگشت تراکنش: ' . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * اجرای کوئری با کش
-     * 
-     * @param string $query کوئری SQL
-     * @param array $params پارامترهای کوئری
-     * @param int $ttl زمان نگهداری کش
-     * @return mixed
-     */
-    public function getCached($query, $params = [], $ttl = 3600) {
-        $key = md5($query . serialize($params));
-        
-        if (isset($this->queryCache[$key]) && $this->queryCache[$key]['expires'] > time()) {
-            return $this->queryCache[$key]['data'];
-        }
-        
-        $result = $this->getRows($query, $params);
-        
-        $this->queryCache[$key] = [
-            'data' => $result,
-            'expires' => time() + $ttl
-        ];
-        
-        return $result;
-    }
-
-    /**
-     * پاک کردن کش کوئری
-     * 
-     * @param string $query کوئری SQL
-     * @param array $params پارامترهای کوئری
-     * @return void
-     */
-    public function clearCache($query = null, $params = []) {
-        if ($query === null) {
-            $this->queryCache = [];
-            return;
-        }
-        
-        $key = md5($query . serialize($params));
-        unset($this->queryCache[$key]);
-    }
-
-    /**
-     * escape کردن مقدار برای استفاده در کوئری
-     * 
-     * @param mixed $value مقدار ورودی
-     * @return string
-     */
-    public function escape($value) {
-        return $this->connection->quote($value);
-    }
-
-    /**
-     * دریافت تعداد کوئری‌های اجرا شده
-     * 
-     * @return int
-     */
-    public function getQueryCount() {
-        return $this->queryCount;
-    }
-
-    /**
-     * دریافت زمان کل اجرای کوئری‌ها
-     * 
-     * @return float
-     */
-    public function getQueryTime() {
-        return $this->queryTime;
-    }
-
-    /**
-     * ثبت لاگ کوئری
-     * 
-     * @param string $query کوئری SQL
-     * @param array $params پارامترها
-     * @param float $time زمان اجرا
-     * @return void
-     */
-    private function logQuery($query, $params, $time) {
-        $log = sprintf(
-            "[%s] Query: %s; Params: %s; Time: %.4f\n",
-            date('Y-m-d H:i:s'),
-            $query,
-            json_encode($params),
-            $time
-        );
-        
-        error_log($log, 3, LOGS_PATH . '/sql/queries.log');
-    }
-
-    /**
-     * ثبت لاگ خطا
-     * 
-     * @param string $message پیام خطا
-     * @param array $context اطلاعات اضافی
-     * @return void
-     */
-    private function logError($message, $context = []) {
-        $log = sprintf(
-            "[%s] %s %s\n",
-            date('Y-m-d H:i:s'),
-            $message,
-            !empty($context) ? json_encode($context) : ''
-        );
-        
-        error_log($log, 3, LOGS_PATH . '/sql/errors.log');
-    }
-
-    /**
-     * بستن اتصال دیتابیس
-     * 
-     * @return void
-     */
-    public function __destruct() {
-        $this->connection = null;
-        $this->statement = null;
-    }
-
-    /**
-     * جلوگیری از کپی شدن شیء
-     */
-    private function __clone() {}
-
-    /**
-     * جلوگیری از unserialize شدن شیء
-     */
-    private function __wakeup() {}
 }

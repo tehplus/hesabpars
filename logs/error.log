@@ -428,3 +428,8 @@ Stack trace:
 [01-May-2025 19:55:36 Asia/Tehran] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\hesabpars\includes\config.php on line 99
 [01-May-2025 19:55:36 Asia/Tehran] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\hesabpars\includes\config.php on line 100
 [01-May-2025 19:55:36 Asia/Tehran] PHP Fatal error:  Cannot redeclare asset() (previously declared in C:\xampp\htdocs\hesabpars\includes\config.php:111) in C:\xampp\htdocs\hesabpars\includes\functions.php on line 22
+[01-May-2025 20:16:31 Asia/Tehran] PHP Fatal error:  Uncaught Error: Undefined constant "APP_ENV" in C:\xampp\htdocs\hesabpars\includes\init.php:43
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(23): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\includes\init.php on line 43

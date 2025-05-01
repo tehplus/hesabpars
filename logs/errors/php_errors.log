@@ -66,3 +66,73 @@ Stack trace:
 [01-May-2025 20:01:48 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
 [01-May-2025 20:01:48 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 379
 [01-May-2025 20:01:48 Asia/Tehran] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\hesabpars\includes\functions.php:45) in C:\xampp\htdocs\hesabpars\includes\auth.php on line 56
+[01-May-2025 20:05:46 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:05:46 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:05:46 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:05:46 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:05:46 Asia/Tehran] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\hesabpars\includes\functions.php:45) in C:\xampp\htdocs\hesabpars\includes\auth.php on line 56
+[01-May-2025 20:05:55 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:05:55 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:05:55 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:05:55 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:05:55 Asia/Tehran] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\hesabpars\includes\functions.php:45) in C:\xampp\htdocs\hesabpars\includes\auth.php on line 56
+[01-May-2025 20:06:01 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:06:01 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:06:01 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:06:01 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:06:01 Asia/Tehran] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\hesabpars\includes\functions.php:45) in C:\xampp\htdocs\hesabpars\includes\auth.php on line 56
+[01-May-2025 20:08:40 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:08:40 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:08:40 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:08:40 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:08:40 Asia/Tehran] PHP Parse error:  Unterminated comment starting line 810 in C:\xampp\htdocs\hesabpars\includes\auth.php on line 810
+[01-May-2025 20:08:46 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:08:46 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:08:46 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:08:46 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:08:46 Asia/Tehran] PHP Parse error:  Unclosed '{' on line 25 in C:\xampp\htdocs\hesabpars\includes\auth.php on line 810
+[01-May-2025 20:08:59 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:08:59 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:08:59 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:08:59 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:08:59 Asia/Tehran] PHP Fatal error:  Uncaught Error: Undefined constant "LOG_ENABLE" in C:\xampp\htdocs\hesabpars\includes\database.php:464
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\includes\database.php(91): Database->logQuery('Database connec...')
+#1 C:\xampp\htdocs\hesabpars\index.php(61): Database->__construct('localhost', 'hesabpars', 'root', '')
+#2 {main}
+  thrown in C:\xampp\htdocs\hesabpars\includes\database.php on line 464
+[01-May-2025 20:10:50 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:10:50 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:10:50 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:10:50 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:10:50 Asia/Tehran] PHP Fatal error:  Uncaught Error: Undefined constant "LOG_ENABLE" in C:\xampp\htdocs\hesabpars\includes\database.php:464
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\includes\database.php(91): Database->logQuery('Database connec...')
+#1 C:\xampp\htdocs\hesabpars\index.php(61): Database->__construct('localhost', 'hesabpars', 'root', '')
+#2 {main}
+  thrown in C:\xampp\htdocs\hesabpars\includes\database.php on line 464
+[01-May-2025 20:11:18 Asia/Tehran] PHP Warning:  Constant ASSETS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 39
+[01-May-2025 20:11:18 Asia/Tehran] PHP Warning:  Constant UPLOADS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 40
+[01-May-2025 20:11:18 Asia/Tehran] PHP Warning:  Constant LOGS_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 41
+[01-May-2025 20:11:18 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:11:18 Asia/Tehran] PHP Fatal error:  Uncaught Error: Undefined constant "LOG_ENABLE" in C:\xampp\htdocs\hesabpars\includes\database.php:464
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\includes\database.php(91): Database->logQuery('Database connec...')
+#1 C:\xampp\htdocs\hesabpars\index.php(61): Database->__construct('localhost', 'hesabpars', 'root', '')
+#2 {main}
+  thrown in C:\xampp\htdocs\hesabpars\includes\database.php on line 464
+[01-May-2025 20:11:45 Asia/Tehran] PHP Warning:  Constant CACHE_PATH already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 118
+[01-May-2025 20:11:45 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:11:45 Asia/Tehran] PHP Warning:  require_once(../includes/config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\hesabpars\pages\login.php on line 6
+[01-May-2025 20:11:45 Asia/Tehran] PHP Fatal error:  Uncaught Error: Failed opening required '../includes/config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php:6
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(84): require()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 6
+[01-May-2025 20:14:39 Asia/Tehran] PHP Warning:  The magic method Database::__wakeup() must have public visibility in C:\xampp\htdocs\hesabpars\includes\database.php on line 517
+[01-May-2025 20:14:39 Asia/Tehran] PHP Warning:  require_once(../includes/config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\hesabpars\pages\login.php on line 6
+[01-May-2025 20:14:39 Asia/Tehran] PHP Fatal error:  Uncaught Error: Failed opening required '../includes/config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\hesabpars\pages\login.php:6
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(38): require()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 6

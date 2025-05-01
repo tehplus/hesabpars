@@ -2,9 +2,23 @@
 
 کد ناقص اومد. ادامشو بنویس. تا اینجا نوشتی.
 
-<!-- محتوای اصلی صفحه -->
-            <div class="content">
-                <div class="container-fluid">
+    /**
+     * تجدید remember token
+     * 
+     * @param string $token توکن قبلی
+     */
+    private function refreshRememberToken($token) {
+        $query = "SELECT user_id FROM remember_tokens WHERE token = ? LIMIT 1";
+        $result = $this->db->getRow($query, [$token]);
+
+        if ($result) {
+            $this->clearRememberToken($token);
+            $this->setRememberToken($result['user_id']);
+        }
+    }
+
+    /**
+     *
 
 
 از همینجا به بعدشو بنویس. از اول ننویسی
