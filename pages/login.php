@@ -1,15 +1,8 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-require_once '../includes/config.php';
-require_once '../includes/functions.php';
-require_once '../includes/db.php';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $db = Database::getInstance();
+        // تغییر نحوه دریافت اتصال دیتابیس
+        $db = Database::getInstance()->getConnection();
         
         $username = clean($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
@@ -19,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $sql = "SELECT * FROM users WHERE username = ? OR email = ?";
-        $stmt = $db->query($sql, [$username, $username]);
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$username, $username]);
         
         if (!$stmt) {
             throw new Exception('خطا در بررسی اطلاعات کاربری');
@@ -40,10 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $user['username'];
         $_SESSION['user_role'] = $user['role'];
 
-        // به‌روزرسانی آخرین ورود - فعلاً غیرفعال تا ستون اضافه شود
-        // $db->query("UPDATE users SET last_login = NOW() WHERE id = ?", [$user['id']]);
-
-        header('Location: dashboard.php');
+        header('Location: index.php?page=dashboard');
         exit;
 
     } catch (Exception $e) {

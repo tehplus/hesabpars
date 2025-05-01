@@ -76,7 +76,7 @@ require_once INCLUDES_PATH . '/functions.php';
 
 // لود کردن کلاس‌های اصلی
 require_once INCLUDES_PATH . '/database.php';
-require_once INCLUDES_PATH . '/auth.php';
+require_once INCLUDES_PATH . '/classes/Auth.php';  // مسیر جدید
 
 // ایجاد نمونه از کلاس‌ها
 $db = new Database(DB_HOST, DB_NAME, DB_USER, DB_PASS);
