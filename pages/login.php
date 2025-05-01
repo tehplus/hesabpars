@@ -1,9 +1,7 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // تغییر نحوه دریافت اتصال دیتابیس
-        $db = Database::getInstance()->getConnection();
-        
+        // استفاده مستقیم از متغیر $db که قبلاً در db.php ایجاد شده
         $username = clean($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
 
@@ -14,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "SELECT * FROM users WHERE username = ? OR email = ?";
         $stmt = $db->prepare($sql);
         $stmt->execute([$username, $username]);
-        
+
         if (!$stmt) {
             throw new Exception('خطا در بررسی اطلاعات کاربری');
         }
