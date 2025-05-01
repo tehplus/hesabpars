@@ -1,9 +1,4 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/auth.php';
-require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/jdf.php';
-
 // بررسی لاگین بودن کاربر
 redirectIfNotLoggedIn();
 
@@ -17,91 +12,59 @@ $recentNotifications = [];
 
 // دریافت آمار کلی
 try {
-    $db = Database::getInstance()->getConnection();
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $database = Database::getInstance();
 
     // آمار فروش امروز
-    $stmt = $db->query("
+    $todaySales = $database->getValue("
         SELECT COALESCE(SUM(total_amount), 0) as total 
         FROM invoices 
         WHERE DATE(created_at) = CURDATE() 
         AND status = 'completed'
     ");
-    $todaySales = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
     // تعداد مشتریان فعال
-    $stmt = $db->query("
+    $totalCustomers = $database->getValue("
         SELECT COUNT(*) as count 
         FROM customers 
         WHERE status = 'active'
     ");
-    $totalCustomers = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
 
     // تعداد محصولات موجود
-    $stmt = $db->query("
+    $totalProducts = $database->getValue("
         SELECT COUNT(*) as count 
         FROM products 
         WHERE status = 'active' 
         AND stock > 0
     ");
-    $totalProducts = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
 
     // درآمد این ماه
-    $stmt = $db->query("
+    $monthlyIncome = $database->getValue("
         SELECT COALESCE(SUM(total_amount), 0) as total 
         FROM invoices 
         WHERE MONTH(created_at) = MONTH(CURRENT_DATE())
         AND YEAR(created_at) = YEAR(CURRENT_DATE())
         AND status = 'completed'
     ");
-    $monthlyIncome = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
     // آخرین فاکتورها
-    $stmt = $db->query("
+    $recentInvoices = $database->getRows("
         SELECT i.*, c.full_name as customer_name 
         FROM invoices i 
         LEFT JOIN customers c ON i.customer_id = c.id 
         ORDER BY i.created_at DESC 
         LIMIT 5
     ");
-    $recentInvoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // آخرین اعلان‌ها
-    $stmt = $db->query("
+    $recentNotifications = $database->getRows("
         SELECT * FROM notifications 
         ORDER BY created_at DESC 
         LIMIT 5
     ");
-    $recentNotifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-} catch(PDOException $e) {
+} catch(Exception $e) {
     error_log("Database Error: " . $e->getMessage());
     createAlert('error', 'خطا در دریافت اطلاعات از دیتابیس');
-}
-
-// اضافه کردن چند داده نمونه برای تست
-if (empty($recentInvoices)) {
-    $recentInvoices = [
-        [
-            'invoice_number' => '1001',
-            'customer_name' => 'مشتری نمونه',
-            'total_amount' => 1500000,
-            'created_at' => date('Y-m-d H:i:s'),
-            'status' => 'completed'
-        ]
-    ];
-}
-
-if (empty($recentNotifications)) {
-    $recentNotifications = [
-        [
-            'title' => 'خوش آمدید',
-            'message' => 'به سیستم حسابداری پارسه خوش آمدید',
-            'icon' => 'fas fa-bell',
-            'color' => '#2196F3',
-            'created_at' => date('Y-m-d H:i:s')
-        ]
-    ];
 }
 ?>
 
