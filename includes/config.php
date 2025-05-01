@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1); // اینو تغییر میدیم به 1 برای دیباگ
 
 // تنظیمات دیتابیس
 define('DB_HOST', 'localhost');
@@ -6,6 +8,7 @@ define('DB_NAME', 'hesabpars');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('BASE_URL', '/hesabpars');
+
 // تنظیمات سایت
 define('SITE_NAME', 'حساب پارسه');
 define('SITE_URL', 'http://localhost/hesabpars');
@@ -25,8 +28,6 @@ define('LOG_PATH', __DIR__ . '/../logs');
 
 // تنظیمات منطقه‌ای
 date_default_timezone_set('Asia/Tehran');
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 // اتصال به دیتابیس
 try {
@@ -44,12 +45,7 @@ try {
     die("خطا در اتصال به دیتابیس: " . $e->getMessage());
 }
 
-// توابع کمکی عمومی
-function redirect($url) {
-    header("Location: $url");
-    exit;
-}
-
+// توابع کمکی asset و url
 function asset($path) {
     return SITE_URL . '/assets/' . ltrim($path, '/');
 }
