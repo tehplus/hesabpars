@@ -1,20 +1,28 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /hesabpars/
-    
-    # اگر فایل یا دایرکتوری وجود نداشت
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    
-    # ریدایرکت به index.php
-    RewriteRule ^(.*)$ index.php [QSA,L]
-</IfModule>
+# تنظیمات پایه Apache برای پروژه حساب پارسه
+# Current Date: 2025-05-01 15:40:47
+# Current User: tehplus
 
-# امنیت دایرکتوری‌ها
+# فعال کردن موتور بازنویسی
+RewriteEngine On
+
+# تنظیم دایرکتوری پایه
+RewriteBase /hesabpars/
+
+# جلوگیری از دسترسی به دایرکتوری‌ها
 Options -Indexes
 
-# محافظت از فایل‌های حساس
+# حفاظت از فایل‌های حساس
 <FilesMatch "^\.">
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+# تنظیم صفحه خطای 404
+ErrorDocument 404 /hesabpars/pages/404.php
+
+# اجازه دسترسی به فایل‌های موجود
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# ریدایرکت درخواست‌ها
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]

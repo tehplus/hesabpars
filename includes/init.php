@@ -1,91 +1,104 @@
 <?php
 /**
- * File: init.php
- * Description: فایل راه‌اندازی اصلی برنامه
+ * فایل راه‌اندازی اولیه برنامه
+ * 
+ * Current Date: 2025-05-01 15:42:38
+ * Current User: tehplus
+ * 
+ * @package HesabPars
+ * @version 1.0.0
  */
 
 // تنظیم مسیر اصلی پروژه
-define('BASE_PATH', realpath(dirname(__FILE__) . '/..'));
+define('BASE_PATH', dirname(__DIR__));
 
-// لود کردن فایل‌های اصلی به ترتیب اهمیت
-require_once __DIR__ . '/config.php';  // اول از همه تنظیمات لود میشه
-require_once __DIR__ . '/db.php';      // بعد اتصال دیتابیس
-require_once __DIR__ . '/auth.php';    // و در نهایت سیستم احراز هویت
+// تنظیم مسیرهای اصلی
+define('INCLUDES_PATH', BASE_PATH . '/includes');
+define('PAGES_PATH', BASE_PATH . '/pages');
+define('ASSETS_PATH', BASE_PATH . '/assets');
+define('UPLOADS_PATH', BASE_PATH . '/uploads');
+define('LOGS_PATH', BASE_PATH . '/logs');
 
-// شروع session اگر شروع نشده باشه
+// بررسی و ایجاد دایرکتوری‌های مورد نیاز
+$required_directories = [
+    UPLOADS_PATH,
+    LOGS_PATH,
+    UPLOADS_PATH . '/products',
+    UPLOADS_PATH . '/users',
+    LOGS_PATH . '/errors',
+    LOGS_PATH . '/access'
+];
+
+foreach ($required_directories as $dir) {
+    if (!file_exists($dir)) {
+        mkdir($dir, 0777, true);
+    }
+}
+
+// تنظیم error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', LOGS_PATH . '/errors/php_error.log');
+
+// تنظیم زمان و منطقه زمانی
+date_default_timezone_set('Asia/Tehran');
+mb_internal_encoding('UTF-8');
+
+// شروع session اگر شروع نشده باشد
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// تنظیم header های امنیتی
-header('X-Frame-Options: SAMEORIGIN');
-header('X-XSS-Protection: 1; mode=block');
-header('X-Content-Type-Options: nosniff');
-if (ENVIRONMENT === 'production') {
-    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-}
+// تنظیم session handling
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_secure', 0); // در محیط تولید باید 1 شود
 
-// تنظیم zone time
-date_default_timezone_set(DEFAULT_TIMEZONE);
-
-// بررسی وجود متغیرهای ضروری
-if (!defined('BASE_URL')) {
-    die('ERROR: BASE_URL is not defined. Please check config.php');
-}
-
-// بررسی اتصال دیتابیس
-if (!isset($db) || !($db instanceof PDO)) {
-    die('ERROR: Database connection is not established. Please check db.php');
-}
-
-// تنظیم error handler سفارشی
+// تنظیم error handler
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
-    if (!(error_reporting() & $errno)) {
-        return false;
-    }
-    
     $error_message = date('Y-m-d H:i:s') . " Error [$errno] $errstr on line $errline in file $errfile\n";
-    error_log($error_message, 3, LOG_PATH . '/error.log');
+    error_log($error_message, 3, LOGS_PATH . '/errors/custom_error.log');
     
-    if (ENVIRONMENT === 'development') {
-        echo "<b>Error:</b> [$errno] $errstr<br>";
-        echo "Line: $errline<br>";
-        echo "File: $errfile<br>";
+    if (ini_get('display_errors')) {
+        printf("<div style='color:red;'>Error: %s</div>", $error_message);
     }
     
     return true;
 });
 
-// تنظیم exception handler سفارشی
+// تنظیم exception handler
 set_exception_handler(function($exception) {
-    $error_message = date('Y-m-d H:i:s') . " Uncaught Exception: " . $exception->getMessage() . "\n";
-    error_log($error_message, 3, LOG_PATH . '/error.log');
+    $error_message = date('Y-m-d H:i:s') . " Exception: " . $exception->getMessage() . 
+                    " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
+    error_log($error_message, 3, LOGS_PATH . '/errors/custom_error.log');
     
-    if (ENVIRONMENT === 'development') {
-        echo "<b>Fatal Error:</b> " . $exception->getMessage() . "<br>";
-        echo "Line: " . $exception->getLine() . "<br>";
-        echo "File: " . $exception->getFile() . "<br>";
-    } else {
-        // در محیط production کاربر را به صفحه خطا هدایت می‌کنیم
-        header('Location: ' . BASE_URL . '/error.php');
+    if (ini_get('display_errors')) {
+        printf("<div style='color:red;'>Exception: %s</div>", $error_message);
     }
-    
-    exit(1);
 });
 
-// تنظیم shutdown handler برای گرفتن fatal errors
+// تنظیم shutdown handler
 register_shutdown_function(function() {
     $error = error_get_last();
     if ($error !== NULL && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
-        $error_message = date('Y-m-d H:i:s') . " Fatal Error: " . $error['message'] . "\n";
-        error_log($error_message, 3, LOG_PATH . '/error.log');
+        $error_message = date('Y-m-d H:i:s') . " Fatal Error: " . $error['message'] . 
+                        " in " . $error['file'] . " on line " . $error['line'] . "\n";
+        error_log($error_message, 3, LOGS_PATH . '/errors/fatal_error.log');
         
-        if (ENVIRONMENT === 'development') {
-            echo "<b>Fatal Error:</b> " . $error['message'] . "<br>";
-            echo "Line: " . $error['line'] . "<br>";
-            echo "File: " . $error['file'] . "<br>";
-        } else {
-            header('Location: ' . BASE_URL . '/error.php');
+        if (ini_get('display_errors')) {
+            printf("<div style='color:red;'>Fatal Error: %s</div>", $error_message);
         }
     }
 });
+
+// لود کردن فایل‌های اصلی
+require_once INCLUDES_PATH . '/config.php';
+require_once INCLUDES_PATH . '/functions.php';
+require_once INCLUDES_PATH . '/auth.php';
+
+// تنظیم headers امنیتی
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: strict-origin-when-cross-origin');
