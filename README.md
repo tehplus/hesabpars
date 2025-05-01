@@ -2,10 +2,10 @@
 
 کد ناقص اومد. ادامشو بنویس. تا اینجا نوشتی.
 
-<!-- مشخصات فیزیکی -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h3><i class="fas fa-ruler-combined"></i> مشخصات فیزیکی</h3>
+</div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-primary mb-3" id="addPriceType">
+                        <i class
 
 از همینجا به بعدشو بنویس. از اول ننویسی
 

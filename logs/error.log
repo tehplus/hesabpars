@@ -343,3 +343,49 @@
 [01-May-2025 16:29:18 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
 [01-May-2025 17:05:38 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
 [01-May-2025 17:10:42 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:21:01 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:53:34 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:53:38 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:53:59 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined function asset() in C:\xampp\htdocs\hesabpars\pages\add-product.php:156
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 156
+[01-May-2025 17:54:05 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined function asset() in C:\xampp\htdocs\hesabpars\pages\add-product.php:156
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 156
+[01-May-2025 17:54:11 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:54:15 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined function asset() in C:\xampp\htdocs\hesabpars\pages\add-product.php:156
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 156
+[01-May-2025 17:54:38 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined function asset() in C:\xampp\htdocs\hesabpars\pages\add-product.php:156
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 156
+[01-May-2025 17:55:19 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined function asset() in C:\xampp\htdocs\hesabpars\pages\add-product.php:156
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 156
+[01-May-2025 17:56:25 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 53
+[01-May-2025 17:56:31 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 54
+[01-May-2025 17:56:45 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:56:55 Asia/Tehran] PHP Fatal error:  Uncaught Error: Undefined constant "LOG_PATH" in C:\xampp\htdocs\hesabpars\pages\add-product.php:21
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\pages\add-product.php(66): logError('\xD8\xAE\xD8\xB7\xD8\xA7\xDB\x8C \xD8\xB9\xD9\x85\xD9\x88...', Array)
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 21
+[01-May-2025 17:57:09 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:57:14 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:57:18 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 51
+[01-May-2025 17:57:18 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 51
+[01-May-2025 17:57:23 Asia/Tehran] PHP Fatal error:  Cannot redeclare redirect() (previously declared in C:\xampp\htdocs\hesabpars\includes\init.php:43) in C:\xampp\htdocs\hesabpars\includes\config.php on line 49
+[01-May-2025 17:57:30 Asia/Tehran] PHP Warning:  Constant BASE_URL already defined in C:\xampp\htdocs\hesabpars\includes\config.php on line 9
+[01-May-2025 17:57:30 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined function asset() in C:\xampp\htdocs\hesabpars\pages\add-product.php:156
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 156
+[01-May-2025 17:57:42 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined function asset() in C:\xampp\htdocs\hesabpars\pages\add-product.php:156
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\add-product.php on line 156

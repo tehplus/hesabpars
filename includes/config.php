@@ -1,13 +1,20 @@
 <?php
 // تنظیمات دیتابیس
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'hesabpars');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('BASE_URL', '/hesabpars');
-// تنظیمات سایت
-define('SITE_NAME', 'حساب پارسه');
-define('SITE_URL', 'http://localhost/hesabpars');
+if (!defined('DB_HOST')) {
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'hesabpars');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+}
+
+// تنظیمات مسیرها
+if (!defined('BASE_URL')) {
+    define('BASE_URL', '/hesabpars');
+}
+
+if (!defined('SITE_NAME')) {
+    define('SITE_NAME', 'حساب پارسه');
+}
 
 // تنظیمات امنیتی
 define('HASH_COST', 10);
@@ -18,14 +25,21 @@ define('ITEMS_PER_PAGE', 20);
 define('DATE_FORMAT', 'Y/m/d');
 define('TIME_FORMAT', 'H:i:s');
 
-// مسیرها
-define('UPLOAD_PATH', __DIR__ . '/../uploads');
-define('LOG_PATH', __DIR__ . '/../logs');
+// مسیرهای ذخیره فایل
+if (!defined('UPLOAD_PATH')) {
+    define('UPLOAD_PATH', BASE_PATH . '/uploads');
+}
 
-// تنظیمات منطقه‌ای
-date_default_timezone_set('Asia/Tehran');
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+if (!defined('LOG_PATH')) {
+    define('LOG_PATH', BASE_PATH . '/logs');
+}
+
+// ایجاد مسیرهای مورد نیاز اگر وجود نداشته باشند
+foreach ([UPLOAD_PATH, LOG_PATH] as $path) {
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
+}
 
 // اتصال به دیتابیس
 try {
@@ -40,19 +54,31 @@ try {
         ]
     );
 } catch(PDOException $e) {
-    die("خطا در اتصال به دیتابیس: " . $e->getMessage());
+    error_log("Database Error: " . $e->getMessage());
+    die("خطا در اتصال به دیتابیس. لطفاً با پشتیبانی تماس بگیرید.");
 }
 
-// توابع کمکی عمومی
-function redirect($url) {
-    header("Location: $url");
-    exit;
-}
+// بررسی وجود جداول مورد نیاز
+try {
+    $tables = ['categories', 'currencies', 'tax_types', 'tax_units', 'products'];
+    $missing_tables = [];
+    
+    foreach ($tables as $table) {
+        $stmt = $db->query("SHOW TABLES LIKE '$table'");
+        if ($stmt->rowCount() == 0) {
+            $missing_tables[] = $table;
+        }
+    }
 
-function asset($path) {
-    return SITE_URL . '/assets/' . ltrim($path, '/');
-}
-
-function url($path) {
-    return SITE_URL . '/' . ltrim($path, '/');
+    if (!empty($missing_tables)) {
+        $sql = file_get_contents(BASE_PATH . '/database/schema.sql');
+        if ($sql) {
+            $db->exec($sql);
+            
+            // اضافه کردن داده‌های پیش‌فرض
+            require_once BASE_PATH . '/database/insert_defaults.php';
+        }
+    }
+} catch(PDOException $e) {
+    error_log("Database Error: " . $e->getMessage());
 }
