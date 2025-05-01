@@ -1,0 +1,21 @@
+2025-05-01 21:09:02 Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'last_login' in 'field list'
+SQL: UPDATE users SET last_login = NOW() WHERE id = ?
+Params: Array
+(
+    [0] => 4
+)
+
+2025-05-01 21:09:37 Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'last_login' in 'field list'
+SQL: UPDATE users SET last_login = NOW() WHERE id = ?
+Params: Array
+(
+    [0] => 4
+)
+
+2025-05-01 21:09:41 Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'last_login' in 'field list'
+SQL: UPDATE users SET last_login = NOW() WHERE id = ?
+Params: Array
+(
+    [0] => 4
+)
+

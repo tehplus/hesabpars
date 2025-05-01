@@ -376,5 +376,5 @@ class Database {
     /**
      * جلوگیری از unserialize شدن شیء
      */
-    private function __wakeup() {}
+    public function __wakeup() {}
 }

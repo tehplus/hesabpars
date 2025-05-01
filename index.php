@@ -7,9 +7,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // لود کردن فایل‌های اصلی
-require_once 'includes/database.php';
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
+require_once 'includes/db.php'; // از db.php استفاده می‌کنیم چون Singleton رو پیاده‌سازی کرده
 require_once 'includes/auth.php';
 
 // شروع سشن

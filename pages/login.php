@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = $user['username'];
         $_SESSION['user_role'] = $user['role'];
 
-        // به‌روزرسانی آخرین ورود
-        $db->query("UPDATE users SET last_login = NOW() WHERE id = ?", [$user['id']]);
+        // به‌روزرسانی آخرین ورود - فعلاً غیرفعال تا ستون اضافه شود
+        // $db->query("UPDATE users SET last_login = NOW() WHERE id = ?", [$user['id']]);
 
         header('Location: dashboard.php');
         exit;
