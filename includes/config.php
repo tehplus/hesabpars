@@ -1,6 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1); // اینو تغییر میدیم به 1 برای دیباگ
+
 // تنظیمات دیتابیس
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'hesabpars');
@@ -45,5 +44,16 @@ try {
     die("خطا در اتصال به دیتابیس: " . $e->getMessage());
 }
 
+// توابع کمکی عمومی
+function redirect($url) {
+    header("Location: $url");
+    exit;
+}
 
+function asset($path) {
+    return SITE_URL . '/assets/' . ltrim($path, '/');
+}
 
+function url($path) {
+    return SITE_URL . '/' . ltrim($path, '/');
+}
