@@ -1,13 +1,11 @@
 <?php
 /**
- * تنظیمات اصلی برنامه حساب پارسه
- * این فایل شامل تمام تنظیمات پایه و ثابت‌های برنامه است
+ * تنظیمات اصلی برنامه
  * 
- * Current Date: 2025-05-01 15:44:35
+ * Current Date: 2025-05-01 16:10:31
  * Current User: tehplus
  * 
  * @package HesabPars
- * @subpackage Configuration
  * @version 1.0.0
  */
 
@@ -16,262 +14,314 @@ if (!defined('BASE_PATH')) {
     die('دسترسی مستقیم به این فایل مجاز نیست.');
 }
 
-/**
- * تنظیمات محیط برنامه
- */
-define('ENVIRONMENT', 'development'); // یا 'production'
-define('DEBUG_MODE', ENVIRONMENT === 'development');
-define('MAINTENANCE_MODE', false);
+// اطلاعات برنامه
+define('APP_NAME', 'حساب‌پرس');
+define('APP_VERSION', '1.0.0');
+define('APP_AUTHOR', 'تِه پلاس');
+define('APP_EMAIL', 'info@hesabpars.ir');
+define('APP_DESCRIPTION', 'سیستم حسابداری آنلاین');
+define('APP_KEYWORDS', 'حسابداری,مالی,فروشگاه,انبارداری');
 
-/**
- * تنظیمات پایه سایت
- */
-define('SITE_NAME', 'حساب پارسه');
-define('SITE_VERSION', '1.0.0');
-define('SITE_DESCRIPTION', 'سیستم حسابداری و مدیریت کسب و کار');
-define('SITE_KEYWORDS', 'حسابداری، مدیریت، فروش، خرید، انبار، گزارش');
-define('SITE_AUTHOR', 'TehPlus');
+// محیط برنامه (production, development, testing)
+define('APP_ENV', 'development');
+define('DEBUG_MODE', APP_ENV !== 'production');
+define('MIN_PHP_VERSION', '8.0.0');
 
-/**
- * تنظیمات URL
- */
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-$host = $_SERVER['HTTP_HOST'];
-$folder = dirname($_SERVER['SCRIPT_NAME']);
-$baseUrl = $protocol . $host . str_replace('\\', '', $folder);
-$baseUrl = rtrim(dirname($baseUrl), '/');
+// مسیرهای اصلی
+define('BASE_URL', 'http://localhost/hesabpars');
+define('IS_HTTPS', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
 
-define('BASE_URL', $baseUrl);
-define('ADMIN_URL', BASE_URL . '/admin');
-define('API_URL', BASE_URL . '/api');
-
-/**
- * تنظیمات مسیرها
- */
-define('UPLOADS_URL', BASE_URL . '/uploads');
-define('ASSETS_URL', BASE_URL . '/assets');
-define('CSS_URL', ASSETS_URL . '/css');
-define('JS_URL', ASSETS_URL . '/js');
-define('IMG_URL', ASSETS_URL . '/img');
-
-/**
- * تنظیمات دیتابیس
- */
+// تنظیمات دیتابیس
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'hesabpars');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
-define('DB_COLLATE', 'utf8mb4_unicode_ci');
+define('DB_COLLATION', 'utf8mb4_persian_ci');
+define('DB_PREFIX', 'hp_');
 
-/**
- * تنظیمات امنیتی
- */
-define('HASH_COST', 10);
-define('SESSION_LIFETIME', 7200); // 2 ساعت
-define('REMEMBER_ME_LIFETIME', 2592000); // 30 روز
-define('MAX_LOGIN_ATTEMPTS', 5);
-define('LOGIN_TIMEOUT', 900); // 15 دقیقه
+// تنظیمات امنیتی
+define('HASH_ALGO', 'argon2id');
+define('HASH_OPTIONS', [
+    'memory_cost' => 65536,    // 64MB
+    'time_cost' => 4,          // 4 iterations
+    'threads' => 3             // 3 threads
+]);
 define('PASSWORD_MIN_LENGTH', 8);
-define('TOKEN_LIFETIME', 3600); // 1 ساعت
+define('PASSWORD_MAX_LENGTH', 72);
+define('LOGIN_MAX_ATTEMPTS', 5);
+define('LOGIN_LOCKOUT_TIME', 15); // دقیقه
+define('API_KEY_LENGTH', 64);
+define('JWT_SECRET', 'your-secret-key-here');
+define('JWT_EXPIRE', 3600); // یک ساعت
+define('CSRF_EXPIRE', 7200); // دو ساعت
 
-/**
- * تنظیمات آپلود فایل
- */
-define('UPLOAD_MAX_SIZE', 10 * 1024 * 1024); // 10 مگابایت
-define('ALLOWED_IMAGE_TYPES', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-define('ALLOWED_DOC_TYPES', ['pdf', 'doc', 'docx', 'xls', 'xlsx']);
-define('IMAGE_MAX_WIDTH', 2000);
-define('IMAGE_MAX_HEIGHT', 2000);
-define('THUMBNAIL_WIDTH', 300);
-define('THUMBNAIL_HEIGHT', 300);
+// تنظیمات Session
+define('SESSION_NAME', 'HESABPARS');
+define('SESSION_LIFETIME', 7200); // دو ساعت
+define('SESSION_PATH', '/');
+define('SESSION_DOMAIN', '');
+define('SESSION_SECURE', IS_HTTPS);
+define('SESSION_HTTPONLY', true);
+define('SESSION_SAMESITE', 'Lax');
 
-/**
- * تنظیمات ایمیل
- */
+// تنظیمات Cache
+define('CACHE_ENABLE', true);
+define('CACHE_TTL', 3600); // یک ساعت
+define('CACHE_PREFIX', 'hp_cache_');
+define('CACHE_DRIVER', 'file'); // file, redis, memcached
+
+// تنظیمات زبان و تاریخ
+define('DEFAULT_LANGUAGE', 'fa');
+define('DEFAULT_TIMEZONE', 'Asia/Tehran');
+define('DATE_FORMAT', 'Y/m/d');
+define('TIME_FORMAT', 'H:i:s');
+define('DATETIME_FORMAT', 'Y/m/d H:i:s');
+define('LOCALES', [
+    'fa' => 'fa_IR.UTF-8',
+    'en' => 'en_US.UTF-8'
+]);
+
+// تنظیمات ایمیل
 define('MAIL_DRIVER', 'smtp');
 define('MAIL_HOST', 'smtp.gmail.com');
 define('MAIL_PORT', 587);
 define('MAIL_USERNAME', 'your-email@gmail.com');
 define('MAIL_PASSWORD', 'your-password');
 define('MAIL_ENCRYPTION', 'tls');
-define('MAIL_FROM_ADDRESS', 'no-reply@hesabpars.com');
-define('MAIL_FROM_NAME', 'حساب پارسه');
+define('MAIL_FROM_ADDRESS', 'noreply@hesabpars.ir');
+define('MAIL_FROM_NAME', APP_NAME);
 
-/**
- * تنظیمات پیامک
- */
-define('SMS_DRIVER', 'kavenegar');
-define('SMS_API_KEY', 'your-api-key');
-define('SMS_SENDER', '10008663');
-define('SMS_TEMPLATE', 'verify');
+// تنظیمات آپلود
+define('UPLOAD_MAX_SIZE', 10 * 1024 * 1024); // 10MB
+define('UPLOAD_ALLOWED_IMAGES', ['jpg', 'jpeg', 'png', 'gif']);
+define('UPLOAD_ALLOWED_DOCS', ['pdf', 'doc', 'docx', 'xls', 'xlsx']);
+define('UPLOAD_ALLOWED_TYPES', array_merge(
+    UPLOAD_ALLOWED_IMAGES,
+    UPLOAD_ALLOWED_DOCS
+));
+define('UPLOAD_PATH', BASE_PATH . '/uploads');
+define('UPLOAD_URL', BASE_URL . '/uploads');
 
-/**
- * تنظیمات کش
- */
-define('CACHE_DRIVER', 'file');
-define('CACHE_PREFIX', 'hesabpars_');
-define('CACHE_LIFETIME', 3600);
-
-/**
- * تنظیمات لاگ
- */
-define('LOG_CHANNEL', 'daily');
-define('LOG_LEVEL', 'debug');
+// تنظیمات لاگ
+define('LOG_ENABLE', true);
+define('LOG_PATH', BASE_PATH . '/logs');
 define('LOG_MAX_FILES', 30);
+define('LOG_MAX_SIZE', 5 * 1024 * 1024); // 5MB
+define('LOG_LEVEL', DEBUG_MODE ? 'debug' : 'error');
+define('LOG_REQUESTS', true);
 
-/**
- * تنظیمات زبان
- */
-define('DEFAULT_LANGUAGE', 'fa');
-define('AVAILABLE_LANGUAGES', ['fa', 'en']);
-define('RTL_LANGUAGES', ['fa', 'ar']);
+// تنظیمات پیام‌های خطا
+define('ERROR_MESSAGES', [
+    'db_connection' => 'خطا در اتصال به پایگاه داده',
+    'db_query' => 'خطا در اجرای کوئری',
+    'invalid_input' => 'داده‌های ورودی نامعتبر است',
+    'access_denied' => 'دسترسی غیرمجاز',
+    'not_found' => 'صفحه مورد نظر یافت نشد',
+    'server_error' => 'خطای سرور',
+    'invalid_token' => 'توکن نامعتبر است',
+    'expired_token' => 'توکن منقضی شده است',
+    'invalid_credentials' => 'نام کاربری یا رمز عبور اشتباه است',
+    'account_locked' => 'حساب کاربری قفل شده است',
+    'file_upload' => 'خطا در آپلود فایل',
+    'file_size' => 'حجم فایل بیش از حد مجاز است',
+    'file_type' => 'نوع فایل مجاز نیست'
+]);
 
-/**
- * تنظیمات زمان
- */
-define('DEFAULT_TIMEZONE', 'Asia/Tehran');
-define('DATE_FORMAT', 'Y/m/d');
-define('TIME_FORMAT', 'H:i:s');
-define('DATETIME_FORMAT', 'Y/m/d H:i:s');
-define('TIMESTAMP_FORMAT', 'Y-m-d H:i:s');
+// تنظیمات پیام‌های موفقیت
+define('SUCCESS_MESSAGES', [
+    'login' => 'ورود با موفقیت انجام شد',
+    'logout' => 'خروج با موفقیت انجام شد',
+    'register' => 'ثبت نام با موفقیت انجام شد',
+    'update' => 'بروزرسانی با موفقیت انجام شد',
+    'delete' => 'حذف با موفقیت انجام شد',
+    'create' => 'ایجاد با موفقیت انجام شد',
+    'upload' => 'آپلود با موفقیت انجام شد'
+]);
 
-/**
- * تنظیمات پیش‌فرض
- */
+// تنظیمات واحدهای پولی
 define('DEFAULT_CURRENCY', 'IRR');
 define('DEFAULT_CURRENCY_SYMBOL', 'ریال');
-define('DEFAULT_THEME', 'default');
-define('DEFAULT_PER_PAGE', 20);
-define('MAX_PER_PAGE', 100);
+define('CURRENCIES', [
+    'IRR' => [
+        'name' => 'ریال',
+        'symbol' => 'ریال',
+        'decimals' => 0
+    ],
+    'IRT' => [
+        'name' => 'تومان',
+        'symbol' => 'تومان',
+        'decimals' => 0
+    ],
+    'USD' => [
+        'name' => 'دلار',
+        'symbol' => '$',
+        'decimals' => 2
+    ],
+    'EUR' => [
+        'name' => 'یورو',
+        'symbol' => '€',
+        'decimals' => 2
+    ]
+]);
 
-/**
- * اتصال به دیتابیس
- */
-try {
-    $db = new PDO(
-        "mysql:host=" . DB_HOST . 
-        ";dbname=" . DB_NAME . 
-        ";charset=" . DB_CHARSET,
-        DB_USER,
-        DB_PASS,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES '" . DB_CHARSET . "' COLLATE '" . DB_COLLATE . "'"
-        ]
-    );
-} catch (PDOException $e) {
-    // لاگ کردن خطا
-    error_log(sprintf(
-        "[%s] Database connection failed: %s\n",
-        date('Y-m-d H:i:s'),
-        $e->getMessage()
-    ), 3, LOGS_PATH . '/errors/database.log');
+// تنظیمات مربوط به محصولات
+define('PRODUCT_IMAGE_SIZES', [
+    'thumb' => ['width' => 100, 'height' => 100],
+    'small' => ['width' => 300, 'height' => 300],
+    'medium' => ['width' => 600, 'height' => 600],
+    'large' => ['width' => 1200, 'height' => 1200]
+]);
 
-    // نمایش خطای مناسب
-    if (DEBUG_MODE) {
-        die(sprintf('خطا در اتصال به پایگاه داده: %s', $e->getMessage()));
-    } else {
-        die('خطا در اتصال به پایگاه داده. لطفاً با پشتیبانی تماس بگیرید.');
-    }
-}
+define('PRODUCT_STATUSES', [
+    'active' => 'فعال',
+    'inactive' => 'غیرفعال',
+    'out_of_stock' => 'ناموجود',
+    'discontinued' => 'متوقف شده'
+]);
 
-/**
- * تنظیمات PHP
- */
-// تنظیم منطقه زمانی
-date_default_timezone_set(DEFAULT_TIMEZONE);
+// تنظیمات مربوط به فاکتورها
+define('INVOICE_TYPES', [
+    'sale' => 'فروش',
+    'purchase' => 'خرید',
+    'return_sale' => 'برگشت از فروش',
+    'return_purchase' => 'برگشت از خرید'
+]);
 
-// تنظیم encoding
-mb_internal_encoding('UTF-8');
-mb_http_output('UTF-8');
+define('INVOICE_STATUSES', [
+    'draft' => 'پیش‌نویس',
+    'pending' => 'در انتظار تایید',
+    'approved' => 'تایید شده',
+    'rejected' => 'رد شده',
+    'paid' => 'پرداخت شده',
+    'partial' => 'پرداخت جزئی',
+    'canceled' => 'لغو شده'
+]);
 
-// تنظیمات امنیتی session
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', ENVIRONMENT === 'production' ? 1 : 0);
-ini_set('session.cookie_samesite', 'Lax');
-ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
+// تنظیمات مربوط به پرداخت‌ها
+define('PAYMENT_METHODS', [
+    'cash' => 'نقدی',
+    'card' => 'کارت به کارت',
+    'check' => 'چک',
+    'deposit' => 'واریز به حساب',
+    'online' => 'پرداخت آنلاین'
+]);
 
-// تنظیمات خطایابی
-if (DEBUG_MODE) {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
-    error_reporting(0);
-}
+define('PAYMENT_STATUSES', [
+    'pending' => 'در انتظار پرداخت',
+    'completed' => 'پرداخت شده',
+    'failed' => 'ناموفق',
+    'refunded' => 'برگشت داده شده',
+    'canceled' => 'لغو شده'
+]);
 
-// تنظیم مسیر لاگ خطاها
-ini_set('error_log', LOGS_PATH . '/errors/php_error.log');
-ini_set('log_errors', 1);
+// تنظیمات نقش‌های کاربری
+define('USER_ROLES', [
+    'admin' => 'مدیر',
+    'manager' => 'مدیر فروش',
+    'accountant' => 'حسابدار',
+    'warehouse' => 'انباردار',
+    'seller' => 'فروشنده',
+    'user' => 'کاربر عادی'
+]);
 
-/**
- * ثابت‌های وضعیت
- */
+// تنظیمات وضعیت‌های کاربر
+define('USER_STATUSES', [
+    'active' => 'فعال',
+    'inactive' => 'غیرفعال',
+    'suspended' => 'معلق',
+    'banned' => 'مسدود'
+]);
+
+// تنظیمات API
+define('API_VERSION', 'v1');
+define('API_PREFIX', '/api/' . API_VERSION);
+define('API_DEBUG', DEBUG_MODE);
+define('API_RATE_LIMIT', 60); // تعداد درخواست در دقیقه
+define('API_TIMEOUT', 30); // ثانیه
+
+// تنظیمات مربوط به گزارش‌ها
+define('REPORT_TYPES', [
+    'daily' => 'روزانه',
+    'weekly' => 'هفتگی',
+    'monthly' => 'ماهانه',
+    'yearly' => 'سالانه',
+    'custom' => 'دلخواه'
+]);
+
+// تنظیمات مربوط به اعلان‌ها
+define('NOTIFICATION_TYPES', [
+    'success' => 'موفقیت',
+    'info' => 'اطلاعات',
+    'warning' => 'هشدار',
+    'error' => 'خطا'
+]);
+
+// تنظیمات مربوط به پیام‌ها
+define('MESSAGE_TYPES', [
+    'private' => 'خصوصی',
+    'system' => 'سیستمی',
+    'broadcast' => 'عمومی'
+]);
+
+// تنظیمات صفحه‌بندی
+define('PAGINATION_PER_PAGE', 20);
+define('PAGINATION_ADJACENTS', 2);
+
+// تنظیمات مربوط به جستجو
+define('SEARCH_MIN_LENGTH', 3);
+define('SEARCH_MAX_LENGTH', 50);
+define('SEARCH_RESULTS_LIMIT', 100);
+
+// تنظیمات مربوط به بک‌آپ
+define('BACKUP_PATH', BASE_PATH . '/backups');
+define('BACKUP_FILES', true);
+define('BACKUP_DB', true);
+define('BACKUP_COMPRESS', true);
+define('BACKUP_ENCRYPT', true);
+define('BACKUP_MAX_FILES', 10);
+define('BACKUP_MAX_SIZE', 500 * 1024 * 1024); // 500MB
+
+// ثابت‌های عمومی
 define('STATUS_ACTIVE', 1);
 define('STATUS_INACTIVE', 0);
-define('STATUS_DELETED', -1);
-define('STATUS_PENDING', 2);
-define('STATUS_APPROVED', 3);
-define('STATUS_REJECTED', 4);
+define('SORT_ASC', 'ASC');
+define('SORT_DESC', 'DESC');
+define('DEFAULT_SORT', 'id');
+define('DEFAULT_SORT_DIRECTION', SORT_DESC);
 
-/**
- * ثابت‌های نقش‌ها
- */
-define('ROLE_ADMIN', 1);
-define('ROLE_MANAGER', 2);
-define('ROLE_USER', 3);
-define('ROLE_GUEST', 4);
+// تنظیمات فایل‌های تمپلیت
+define('TEMPLATE_PATH', BASE_PATH . '/templates');
+define('TEMPLATE_CACHE', BASE_PATH . '/cache/templates');
+define('TEMPLATE_EXTENSION', '.php');
 
-/**
- * ثابت‌های دسترسی‌ها
- */
-define('PERMISSION_VIEW', 1);
-define('PERMISSION_CREATE', 2);
-define('PERMISSION_EDIT', 3);
-define('PERMISSION_DELETE', 4);
+// تنظیمات مربوط به سئو
+define('SEO_TITLE_SEPARATOR', ' | ');
+define('SEO_TITLE_APPEND', APP_NAME);
+define('SEO_DESCRIPTION_LENGTH', 160);
+define('SEO_KEYWORDS_LIMIT', 10);
 
-/**
- * ثابت‌های انواع فایل
- */
-define('FILE_TYPE_IMAGE', 1);
-define('FILE_TYPE_DOCUMENT', 2);
-define('FILE_TYPE_VIDEO', 3);
-define('FILE_TYPE_AUDIO', 4);
+// تنظیمات تصاویر پیش‌فرض
+define('DEFAULT_AVATAR', 'assets/img/default-avatar.png');
+define('DEFAULT_PRODUCT_IMAGE', 'assets/img/default-product.png');
+define('DEFAULT_CATEGORY_IMAGE', 'assets/img/default-category.png');
+define('DEFAULT_BRAND_IMAGE', 'assets/img/default-brand.png');
 
-/**
- * ثابت‌های وضعیت پرداخت
- */
-define('PAYMENT_PENDING', 1);
-define('PAYMENT_COMPLETED', 2);
-define('PAYMENT_FAILED', 3);
-define('PAYMENT_REFUNDED', 4);
+// تنظیمات مربوط به فایل‌های مجاز
+define('ALLOWED_IMAGE_TYPES', ['image/jpeg', 'image/png', 'image/gif']);
+define('ALLOWED_DOCUMENT_TYPES', ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+define('ALLOWED_SPREADSHEET_TYPES', ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
 
-/**
- * ثابت‌های وضعیت سفارش
- */
-define('ORDER_PENDING', 1);
-define('ORDER_PROCESSING', 2);
-define('ORDER_COMPLETED', 3);
-define('ORDER_CANCELLED', 4);
-define('ORDER_REFUNDED', 5);
+// تنظیمات مربوط به محدودیت‌های فایل
+define('MAX_UPLOAD_SIZE', 10 * 1024 * 1024); // 10MB
+define('MAX_IMAGE_WIDTH', 2048);
+define('MAX_IMAGE_HEIGHT', 2048);
+define('IMAGE_QUALITY', 80);
 
-/**
- * ثابت‌های نوع تراکنش
- */
-define('TRANSACTION_DEPOSIT', 1);
-define('TRANSACTION_WITHDRAW', 2);
-define('TRANSACTION_TRANSFER', 3);
-
-/**
- * ثابت‌های نوع اعلان
- */
-define('NOTIFICATION_INFO', 1);
-define('NOTIFICATION_SUCCESS', 2);
-define('NOTIFICATION_WARNING', 3);
-define('NOTIFICATION_ERROR', 4);
+// تنظیمات مربوط به امنیت
+define('SECURE_AUTH_KEY', 'put your unique phrase here');
+define('SECURE_AUTH_SALT', 'put your unique phrase here');
+define('LOGGED_IN_KEY', 'put your unique phrase here');
+define('LOGGED_IN_SALT', 'put your unique phrase here');
+define('NONCE_KEY', 'put your unique phrase here');
+define('NONCE_SALT', 'put your unique phrase here');
