@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $sql = "SELECT * FROM users WHERE username = ? OR email = ?";
-        $stmt = $db->prepare($sql);
+$stmt = Database::getInstance()->query($sql, [$username, $username]);
         $stmt->execute([$username, $username]);
 
         if (!$stmt) {

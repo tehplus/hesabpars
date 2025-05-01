@@ -17,7 +17,7 @@ $recentNotifications = [];
 
 // دریافت آمار کلی
 try {
-    $db = new PDO("mysql:host=localhost;dbname=hesabpars;charset=utf8mb4", "root", "");
+    $db = Database::getInstance()->getConnection();
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // آمار فروش امروز

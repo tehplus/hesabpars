@@ -195,3 +195,38 @@ Stack trace:
 #0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
 #1 {main}
   thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13
+[01-May-2025 22:15:55 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getInstance() in C:\xampp\htdocs\hesabpars\pages\login.php:13
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13
+[01-May-2025 22:17:00 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getInstance() in C:\xampp\htdocs\hesabpars\pages\login.php:13
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13
+[01-May-2025 22:20:07 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getInstance() in C:\xampp\htdocs\hesabpars\pages\login.php:13
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13
+[01-May-2025 22:20:21 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getInstance() in C:\xampp\htdocs\hesabpars\pages\login.php:13
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13
+[01-May-2025 22:21:16 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getInstance() in C:\xampp\htdocs\hesabpars\pages\login.php:13
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13
+[01-May-2025 22:21:23 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getInstance() in C:\xampp\htdocs\hesabpars\pages\login.php:13
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13
+[01-May-2025 22:23:06 Asia/Tehran] PHP Fatal error:  Uncaught Error: Call to undefined method Database::getInstance() in C:\xampp\htdocs\hesabpars\pages\login.php:13
+Stack trace:
+#0 C:\xampp\htdocs\hesabpars\index.php(28): require_once()
+#1 {main}
+  thrown in C:\xampp\htdocs\hesabpars\pages\login.php on line 13

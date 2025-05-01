@@ -37,6 +37,7 @@ class Database {
     /**
      * سازنده خصوصی برای الگوی Singleton
      */
+    
     private function __construct() {
         try {
             // بررسی تعریف شدن ثابت‌های مورد نیاز
