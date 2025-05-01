@@ -1,65 +1,59 @@
-# تنظیمات Apache برای پروژه حساب پارسه
-# Current Date: 2025-05-01 15:47:17
-# Current User: tehplus
-
-# فعال کردن موتور بازنویسی
+# Enable rewriting
 RewriteEngine On
 
-# تنظیم دایرکتوری پایه
-RewriteBase /hesabpars/
-
-# جلوگیری از دسترسی به دایرکتوری‌ها
-Options -Indexes
-
-# تنظیم MIME Types
-AddType application/javascript .js
-AddType text/css .css
-AddType image/svg+xml .svg
-AddType application/x-font-ttf .ttf
-AddType application/x-font-woff .woff
-AddType application/font-woff2 .woff2
-
-# کش کردن فایل‌های استاتیک
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType image/jpg "access plus 1 year"
-    ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/png "access plus 1 year"
-    ExpiresByType image/gif "access plus 1 year"
-    ExpiresByType image/svg+xml "access plus 1 year"
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
-</IfModule>
-
-# فشرده‌سازی
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
-</IfModule>
-
-# ریدایرکت درخواست‌ها
-RewriteCond %{REQUEST_FILENAME} !-f
+# If the request is not for a valid directory
 RewriteCond %{REQUEST_FILENAME} !-d
+# If the request is not for a valid file
+RewriteCond %{REQUEST_FILENAME} !-f
+# If the request is not for a valid link
+RewriteCond %{REQUEST_FILENAME} !-l
+
+# Rewrite the request to index.php
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
 
-# حفاظت از فایل‌های حساس
-<FilesMatch "^\.">
+# Set default character set
+AddDefaultCharset UTF-8
+
+# Set PHP error settings
+php_flag display_startup_errors off
+php_flag display_errors off
+php_flag html_errors off
+php_value docref_root 0
+php_value docref_ext 0
+
+# Disable directory listing
+Options -Indexes
+
+# Protect .htaccess
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protect config files
+<FilesMatch "^.*\.(env|config|json|lock|sql)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# امنیت دایرکتوری uploads
-<Directory "/uploads">
-    Options -ExecCGI
-    RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8
-    RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8
-    <FilesMatch "(?i)\.(php|php3?|phtml|php5|php7|php8)$">
-        Order Deny,Allow
-        Deny from all
-    </FilesMatch>
-</Directory>
+# Enable compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
 
-# امنیت دایرکتوری logs
-<Directory "/logs">
-    Order deny,allow
-    Deny from all
-</Directory>
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), midi=(), sync-xhr=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), fullscreen=(self), payment=()"
+</IfModule>
