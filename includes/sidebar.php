@@ -1,490 +1,574 @@
 <?php
 /**
- * سایدبار اصلی برنامه
- * 
- * Current Date: 2025-05-01 15:59:16
- * Current User: tehplus
+ * سایدبار اصلی برنامه حسابپارس
  * 
  * @package HesabPars
  * @subpackage Layout
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-// جلوگیری از دسترسی مستقیم به فایل
-if (!defined('BASE_PATH')) {
-    die('دسترسی مستقیم به این فایل مجاز نیست.');
-}
+// جلوگیری از دسترسی مستقیم
+defined('BASE_PATH') or die('دسترسی مستقیم به این فایل مجاز نیست.');
 
-// دریافت آدرس صفحه فعلی
-$current_page = $_GET['url'] ?? '';
-
-// تابع بررسی فعال بودن منو
-function isMenuActive($url) {
-    global $current_page;
-    return strpos($current_page, $url) === 0 ? 'active' : '';
-}
-
-// تابع بررسی باز بودن منو
-function isMenuOpen($urls) {
-    global $current_page;
-    foreach ($urls as $url) {
-        if (strpos($current_page, $url) === 0) {
-            return 'show';
-        }
-    }
-    return '';
+// تابع تشخیص منوی فعال
+function isActive($path) {
+    $current_path = $_SERVER['REQUEST_URI'];
+    return (strpos($current_path, $path) !== false) ? 'active' : '';
 }
 ?>
 
-<!-- سایدبار -->
-<aside class="main-sidebar">
-    <!-- اسکرول داخلی -->
-    <div class="sidebar-wrapper">
-        <!-- منوی اصلی -->
-        <nav class="sidebar-nav">
-            <ul class="nav-list">
-                <!-- داشبورد -->
-                <li class="nav-item <?php echo isMenuActive('dashboard'); ?>">
-                    <a href="<?php echo url('dashboard'); ?>" class="nav-link">
-                        <i class="fas fa-home"></i>
-                        <span>داشبورد</span>
-                    </a>
-                </li>
-
-                <!-- محصولات -->
-                <li class="nav-item">
-                    <a href="#productsCollapse" class="nav-link collapsed" 
-                       data-bs-toggle="collapse" 
-                       aria-expanded="<?php echo isMenuOpen(['products', 'categories']) ? 'true' : 'false'; ?>">
-                        <i class="fas fa-box"></i>
-                        <span>محصولات</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <div class="collapse <?php echo isMenuOpen(['products', 'categories']); ?>" id="productsCollapse">
-                        <ul class="nav-list">
-                            <li class="nav-item <?php echo isMenuActive('products/list'); ?>">
-                                <a href="<?php echo url('products/list'); ?>" class="nav-link">
-                                    <i class="fas fa-list"></i>
-                                    <span>لیست محصولات</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('products/add'); ?>">
-                                <a href="<?php echo url('products/add'); ?>" class="nav-link">
-                                    <i class="fas fa-plus"></i>
-                                    <span>افزودن محصول</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('products/categories'); ?>">
-                                <a href="<?php echo url('products/categories'); ?>" class="nav-link">
-                                    <i class="fas fa-tags"></i>
-                                    <span>دسته‌بندی‌ها</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- انبار -->
-                <li class="nav-item">
-                    <a href="#inventoryCollapse" class="nav-link collapsed" 
-                       data-bs-toggle="collapse" 
-                       aria-expanded="<?php echo isMenuOpen(['inventory', 'stock']) ? 'true' : 'false'; ?>">
-                        <i class="fas fa-warehouse"></i>
-                        <span>انبار</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <div class="collapse <?php echo isMenuOpen(['inventory', 'stock']); ?>" id="inventoryCollapse">
-                        <ul class="nav-list">
-                            <li class="nav-item <?php echo isMenuActive('inventory/stock'); ?>">
-                                <a href="<?php echo url('inventory/stock'); ?>" class="nav-link">
-                                    <i class="fas fa-boxes"></i>
-                                    <span>موجودی انبار</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('inventory/transactions'); ?>">
-                                <a href="<?php echo url('inventory/transactions'); ?>" class="nav-link">
-                                    <i class="fas fa-exchange-alt"></i>
-                                    <span>گردش انبار</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- خرید -->
-                <li class="nav-item">
-                    <a href="#purchasesCollapse" class="nav-link collapsed" 
-                       data-bs-toggle="collapse" 
-                       aria-expanded="<?php echo isMenuOpen(['purchases', 'suppliers']) ? 'true' : 'false'; ?>">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>خرید</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <div class="collapse <?php echo isMenuOpen(['purchases', 'suppliers']); ?>" id="purchasesCollapse">
-                        <ul class="nav-list">
-                            <li class="nav-item <?php echo isMenuActive('purchases/list'); ?>">
-                                <a href="<?php echo url('purchases/list'); ?>" class="nav-link">
-                                    <i class="fas fa-list"></i>
-                                    <span>لیست خریدها</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('purchases/add'); ?>">
-                                <a href="<?php echo url('purchases/add'); ?>" class="nav-link">
-                                    <i class="fas fa-plus"></i>
-                                    <span>خرید جدید</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('purchases/suppliers'); ?>">
-                                <a href="<?php echo url('purchases/suppliers'); ?>" class="nav-link">
-                                    <i class="fas fa-truck"></i>
-                                    <span>تامین‌کنندگان</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- فروش -->
-                <li class="nav-item">
-                    <a href="#salesCollapse" class="nav-link collapsed" 
-                       data-bs-toggle="collapse" 
-                       aria-expanded="<?php echo isMenuOpen(['sales', 'customers']) ? 'true' : 'false'; ?>">
-                        <i class="fas fa-cash-register"></i>
-                        <span>فروش</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <div class="collapse <?php echo isMenuOpen(['sales', 'customers']); ?>" id="salesCollapse">
-                        <ul class="nav-list">
-                            <li class="nav-item <?php echo isMenuActive('sales/list'); ?>">
-                                <a href="<?php echo url('sales/list'); ?>" class="nav-link">
-                                    <i class="fas fa-list"></i>
-                                    <span>لیست فروش‌ها</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('sales/add'); ?>">
-                                <a href="<?php echo url('sales/add'); ?>" class="nav-link">
-                                    <i class="fas fa-plus"></i>
-                                    <span>فروش جدید</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('sales/customers'); ?>">
-                                <a href="<?php echo url('sales/customers'); ?>" class="nav-link">
-                                    <i class="fas fa-users"></i>
-                                    <span>مشتریان</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- مالی -->
-                <li class="nav-item">
-                    <a href="#financialCollapse" class="nav-link collapsed" 
-                       data-bs-toggle="collapse" 
-                       aria-expanded="<?php echo isMenuOpen(['financial', 'accounting']) ? 'true' : 'false'; ?>">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <span>امور مالی</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <div class="collapse <?php echo isMenuOpen(['financial', 'accounting']); ?>" id="financialCollapse">
-                        <ul class="nav-list">
-                            <li class="nav-item <?php echo isMenuActive('financial/transactions'); ?>">
-                                <a href="<?php echo url('financial/transactions'); ?>" class="nav-link">
-                                    <i class="fas fa-exchange-alt"></i>
-                                    <span>تراکنش‌ها</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('financial/invoices'); ?>">
-                                <a href="<?php echo url('financial/invoices'); ?>" class="nav-link">
-                                    <i class="fas fa-file-invoice-dollar"></i>
-                                    <span>صورتحساب‌ها</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('financial/expenses'); ?>">
-                                <a href="<?php echo url('financial/expenses'); ?>" class="nav-link">
-                                    <i class="fas fa-receipt"></i>
-                                    <span>هزینه‌ها</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- گزارشات -->
-                <li class="nav-item">
-                    <a href="#reportsCollapse" class="nav-link collapsed" 
-                       data-bs-toggle="collapse" 
-                       aria-expanded="<?php echo isMenuOpen(['reports']) ? 'true' : 'false'; ?>">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>گزارشات</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <div class="collapse <?php echo isMenuOpen(['reports']); ?>" id="reportsCollapse">
-                        <ul class="nav-list">
-                            <li class="nav-item <?php echo isMenuActive('reports/sales'); ?>">
-                                <a href="<?php echo url('reports/sales'); ?>" class="nav-link">
-                                    <i class="fas fa-chart-line"></i>
-                                    <span>گزارش فروش</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('reports/inventory'); ?>">
-                                <a href="<?php echo url('reports/inventory'); ?>" class="nav-link">
-                                    <i class="fas fa-warehouse"></i>
-                                    <span>گزارش انبار</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('reports/financial'); ?>">
-                                <a href="<?php echo url('reports/financial'); ?>" class="nav-link">
-                                    <i class="fas fa-money-check-alt"></i>
-                                    <span>گزارش مالی</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- تنظیمات -->
-                <li class="nav-item">
-                    <a href="#settingsCollapse" class="nav-link collapsed" 
-                       data-bs-toggle="collapse" 
-                       aria-expanded="<?php echo isMenuOpen(['settings']) ? 'true' : 'false'; ?>">
-                        <i class="fas fa-cog"></i>
-                        <span>تنظیمات</span>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <div class="collapse <?php echo isMenuOpen(['settings']); ?>" id="settingsCollapse">
-                        <ul class="nav-list">
-                            <li class="nav-item <?php echo isMenuActive('settings/general'); ?>">
-                                <a href="<?php echo url('settings/general'); ?>" class="nav-link">
-                                    <i class="fas fa-sliders-h"></i>
-                                    <span>تنظیمات عمومی</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('settings/users'); ?>">
-                                <a href="<?php echo url('settings/users'); ?>" class="nav-link">
-                                    <i class="fas fa-users-cog"></i>
-                                    <span>کاربران</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('settings/roles'); ?>">
-                                <a href="<?php echo url('settings/roles'); ?>" class="nav-link">
-                                    <i class="fas fa-user-shield"></i>
-                                    <span>نقش‌ها و دسترسی‌ها</span>
-                                </a>
-                            </li>
-                            <li class="nav-item <?php echo isMenuActive('settings/backup'); ?>">
-                                <a href="<?php echo url('settings/backup'); ?>" class="nav-link">
-                                    <i class="fas fa-database"></i>
-                                    <span>پشتیبان‌گیری</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </nav>
+<!-- شروع سایدبار -->
+<div class="sidebar">
+    <!-- هدر سایدبار با لوگو -->
+    <div class="sidebar-header">
+        <div class="logo-box">
+            <img src="<?php echo asset('images/logo.png'); ?>" alt="<?php echo SITE_NAME; ?>" class="logo">
+        </div>
+        <button id="sidebar-toggle" class="sidebar-toggle">
+            <i class="fas fa-chevron-right"></i>
+        </button>
     </div>
-</aside>
 
-<!-- استایل‌های سایدبار -->
+    <!-- منوی اصلی -->
+    <div class="sidebar-menu">
+        <ul class="menu-items">
+            <!-- داشبورد -->
+            <li class="menu-item <?php echo isActive('dashboard'); ?>">
+                <a href="<?php echo url('dashboard'); ?>" class="menu-link">
+                    <i class="fas fa-home"></i>
+                    <span>داشبورد</span>
+                </a>
+            </li>
+
+            <!-- محصولات -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-box"></i>
+                    <span>محصولات</span>
+                    <i class="fas fa-angle-left submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="<?php echo isActive('products/list'); ?>">
+                        <a href="<?php echo url('products/list'); ?>">
+                            <i class="fas fa-list"></i>
+                            <span>لیست محصولات</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('products/add'); ?>">
+                        <a href="<?php echo url('products/add'); ?>">
+                            <i class="fas fa-plus"></i>
+                            <span>افزودن محصول</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('products/categories'); ?>">
+                        <a href="<?php echo url('products/categories'); ?>">
+                            <i class="fas fa-tags"></i>
+                            <span>دسته‌بندی‌ها</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- انبار -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-warehouse"></i>
+                    <span>انبار</span>
+                    <i class="fas fa-angle-left submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="<?php echo isActive('inventory/stock'); ?>">
+                        <a href="<?php echo url('inventory/stock'); ?>">
+                            <i class="fas fa-boxes"></i>
+                            <span>موجودی انبار</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('inventory/transactions'); ?>">
+                        <a href="<?php echo url('inventory/transactions'); ?>">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>گردش انبار</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- فروش -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>فروش</span>
+                    <i class="fas fa-angle-left submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="<?php echo isActive('sales/list'); ?>">
+                        <a href="<?php echo url('sales/list'); ?>">
+                            <i class="fas fa-list"></i>
+                            <span>لیست فروش</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('sales/add'); ?>">
+                        <a href="<?php echo url('sales/add'); ?>">
+                            <i class="fas fa-plus"></i>
+                            <span>فروش جدید</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- مشتریان -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-users"></i>
+                    <span>مشتریان</span>
+                    <i class="fas fa-angle-left submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="<?php echo isActive('customers/list'); ?>">
+                        <a href="<?php echo url('customers/list'); ?>">
+                            <i class="fas fa-list"></i>
+                            <span>لیست مشتریان</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('customers/add'); ?>">
+                        <a href="<?php echo url('customers/add'); ?>">
+                            <i class="fas fa-user-plus"></i>
+                            <span>مشتری جدید</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- گزارشات -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>گزارشات</span>
+                    <i class="fas fa-angle-left submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="<?php echo isActive('reports/sales'); ?>">
+                        <a href="<?php echo url('reports/sales'); ?>">
+                            <i class="fas fa-chart-line"></i>
+                            <span>گزارش فروش</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('reports/inventory'); ?>">
+                        <a href="<?php echo url('reports/inventory'); ?>">
+                            <i class="fas fa-box"></i>
+                            <span>گزارش انبار</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('reports/customers'); ?>">
+                        <a href="<?php echo url('reports/customers'); ?>">
+                            <i class="fas fa-users"></i>
+                            <span>گزارش مشتریان</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- تنظیمات -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-link">
+                    <i class="fas fa-cog"></i>
+                    <span>تنظیمات</span>
+                    <i class="fas fa-angle-left submenu-arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li class="<?php echo isActive('settings/profile'); ?>">
+                        <a href="<?php echo url('settings/profile'); ?>">
+                            <i class="fas fa-user-cog"></i>
+                            <span>پروفایل</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('settings/users'); ?>">
+                        <a href="<?php echo url('settings/users'); ?>">
+                            <i class="fas fa-users-cog"></i>
+                            <span>کاربران</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('settings/backup'); ?>">
+                        <a href="<?php echo url('settings/backup'); ?>">
+                            <i class="fas fa-database"></i>
+                            <span>پشتیبان‌گیری</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- فوتر سایدبار -->
+    <div class="sidebar-footer">
+        <div class="user-box">
+            <img src="<?php echo asset('images/avatar.png'); ?>" alt="تصویر کاربر" class="user-avatar">
+            <div class="user-info">
+                <h5><?php echo $_SESSION['user_full_name'] ?? 'کاربر'; ?></h5>
+                <p><?php echo $_SESSION['user_role'] ?? 'کاربر عادی'; ?></p>
+            </div>
+        </div>
+        <div class="footer-actions">
+            <a href="<?php echo url('settings/profile'); ?>" title="تنظیمات">
+                <i class="fas fa-cog"></i>
+            </a>
+            <a href="<?php echo url('auth/logout'); ?>" title="خروج">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- استایل سایدبار -->
 <style>
-.main-sidebar {
+.sidebar {
     position: fixed;
-    top: 60px;
+    top: 0;
     right: 0;
-    bottom: 0;
-    width: 260px;
+    width: 280px;
+    height: 100vh;
     background: #ffffff;
-    border-left: 1px solid #e5e9f2;
-    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
     z-index: 1000;
-    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
-.sidebar-collapsed .main-sidebar {
-    width: 70px;
+.sidebar.collapsed {
+    width: 80px;
 }
 
-.sidebar-wrapper {
-    height: 100%;
+/* هدر سایدبار */
+.sidebar-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.logo-box {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+.sidebar-toggle {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #f8f9fa;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background: #e9ecef;
+}
+
+.sidebar.collapsed .sidebar-toggle i {
+    transform: rotate(180deg);
+}
+
+/* منوی اصلی */
+.sidebar-menu {
+    flex: 1;
     overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: #e5e9f2 transparent;
+    padding: 20px 0;
 }
 
-.sidebar-wrapper::-webkit-scrollbar {
-    width: 6px;
-}
-
-.sidebar-wrapper::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.sidebar-wrapper::-webkit-scrollbar-thumb {
-    background-color: #e5e9f2;
-    border-radius: 3px;
-}
-
-.nav-list {
+.menu-items {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.nav-item {
-    margin: 4px 8px;
+.menu-item {
+    margin: 5px 15px;
+    border-radius: 8px;
 }
 
-.nav-link {
+.menu-link {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
-    color: #506690;
+    padding: 12px 15px;
+    color: #495057;
     text-decoration: none;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-.nav-link:hover {
-    color: #2c3e50;
+.menu-link:hover {
     background: #f8f9fa;
+    color: #2196f3;
 }
 
-.nav-link.active {
-    color: #3498db;
-    background: #edf2f7;
-}
-
-.nav-link i:first-child {
+.menu-link i:first-child {
     width: 20px;
     margin-left: 10px;
-    font-size: 16px;
-    text-align: center;
+    font-size: 18px;
 }
 
-.nav-link i.fa-chevron-left {
-    margin-right: auto;
-    margin-left: 0;
-    font-size: 12px;
-    transition: transform 0.2s ease;
-}
-
-.nav-link[aria-expanded="true"] i.fa-chevron-left {
-    transform: rotate(-90deg);
-}
-
-.nav-link span {
+.menu-link span {
+    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.sidebar-collapsed .nav-link span,
-.sidebar-collapsed .nav-link i.fa-chevron-left {
+.submenu-arrow {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+/* زیرمنو */
+.submenu {
+    list-style: none;
+    padding: 5px 0;
+    margin: 5px 0 0 0;
+    background: #f8f9fa;
+    border-radius: 8px;
     display: none;
 }
 
-.collapse {
-    padding-right: 34px;
+.has-submenu.open .submenu {
+    display: block;
 }
 
-.sidebar-collapsed .collapse {
-    display: none !important;
+.has-submenu.open .submenu-arrow {
+    transform: rotate(-90deg);
+}
+
+.submenu li {
+    padding: 0 15px;
+}
+
+.submenu a {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    color: #6c757d;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.submenu a:hover {
+    background: #e9ecef;
+    color: #2196f3;
+}
+
+.submenu i {
+    width: 18px;
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+/* منوی فعال */
+.menu-item.active > .menu-link,
+.submenu li.active > a {
+    background: #e3f2fd;
+    color: #2196f3;
+}
+
+/* فوتر سایدبار */
+.sidebar-footer {
+    padding: 15px;
+    border-top: 1px solid #f0f0f0;
+    background: #ffffff;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.user-info h5 {
+    margin: 0;
+    font-size: 14px;
+    color: #495057;
+}
+
+.user-info p {
+    margin: 0;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.footer-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.footer-actions a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-actions a:hover {
+    color: #2196f3;
+}
+
+/* حالت جمع شده */
+.sidebar.collapsed .logo-box span,
+.sidebar.collapsed .menu-link span,
+.sidebar.collapsed .submenu,
+.sidebar.collapsed .user-info {
+    display: none;
+}
+
+.sidebar.collapsed .menu-item {
+    margin: 5px 10px;
+}
+
+.sidebar.collapsed .menu-link {
+    padding: 12px;
+    justify-content: center;
+}
+
+.sidebar.collapsed .menu-link i:first-child {
+    margin: 0;
+}
+
+.sidebar.collapsed .submenu-arrow {
+    display: none;
 }
 
 /* ریسپانسیو */
 @media (max-width: 992px) {
-    .main-sidebar {
+    .sidebar {
         transform: translateX(100%);
     }
     
-    .sidebar-open .main-sidebar {
+    .sidebar.open {
         transform: translateX(0);
     }
-}
-
-/* تم تاریک */
-[data-theme="dark"] .main-sidebar {
-    background: #1a1c23;
-    border-color: #2d3748;
-}
-
-[data-theme="dark"] .nav-link {
-    color: #cbd5e0;
-}
-
-[data-theme="dark"] .nav-link:hover {
-    color: #ffffff;
-    background: #2d3748;
-}
-
-[data-theme="dark"] .nav-link.active {
-    color: #60a5fa;
-    background: #2d3748;
+    
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.3);
+        z-index: 999;
+        display: none;
+    }
+    
+    .sidebar.open + .sidebar-backdrop {
+        display: block;
+    }
 }
 </style>
 
-<!-- اسکریپت‌های سایدبار -->
+<!-- اسکریپت سایدبار -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // بستن سایر منوها هنگام باز کردن یک منو
-    const collapseElements = document.querySelectorAll('.collapse');
-    collapseElements.forEach(collapse => {
-        collapse.addEventListener('show.bs.collapse', function() {
-            collapseElements.forEach(otherCollapse => {
-                if (otherCollapse !== collapse && bootstrap.Collapse.getInstance(otherCollapse)) {
-                    bootstrap.Collapse.getInstance(otherCollapse).hide();
-                }
-            });
-        });
-    });
-
-    // مدیریت کلیک روی دکمه تغییر وضعیت سایدبار در موبایل
-    const sidebarToggle = document.getElementById('sidebarToggle');
+    // دکمه‌های تاگل سایدبار
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function() {
-            document.body.classList.toggle('sidebar-open');
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebar_collapsed', sidebar.classList.contains('collapsed'));
         });
     }
-
-    // بستن سایدبار در موبایل با کلیک خارج از آن
-    document.addEventListener('click', function(event) {
-        if (window.innerWidth <= 992 && 
-            !event.target.closest('.main-sidebar') && 
-            !event.target.closest('#sidebarToggle')) {
-            document.body.classList.remove('sidebar-open');
-        }
-    });
-
-    // تنظیم عرض محتوای اصلی
-    function adjustMainContent() {
-        const mainContent = document.querySelector('.main-content');
-        if (mainContent) {
-            if (window.innerWidth > 992) {
-                const sidebarWidth = document.body.classList.contains('sidebar-collapsed') ? 70 : 260;
-                mainContent.style.marginRight = sidebarWidth + 'px';
-            } else {
-                mainContent.style.marginRight = '0';
-            }
-        }
-    }
-
-    // اجرای تابع تنظیم عرض در لود صفحه و تغییر سایز
-    adjustMainContent();
-    window.addEventListener('resize', adjustMainContent);
     
-    // اجرای مجدد هنگام تغییر وضعیت سایدبار
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.attributeName === 'class') {
-                adjustMainContent();
+    // بازیابی وضعیت قبلی سایدبار
+    if (localStorage.getItem('sidebar_collapsed') === 'true') {
+        sidebar.classList.add('collapsed');
+    }
+    
+    // منوهای کشویی
+    const submenuItems = document.querySelectorAll('.has-submenu > .menu-link');
+    
+    submenuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const parent = this.parentElement;
+            const isOpen = parent.classList.contains('open');
+            
+            // بستن همه منوهای باز
+            document.querySelectorAll('.has-submenu').forEach(el => {
+                if (el !== parent) {
+                    el.classList.remove('open');
+                }
+            });
+            
+            // تاگل منوی فعلی
+            parent.classList.toggle('open');
+            
+            // ذخیره وضعیت منو
+            if (!isOpen) {
+                localStorage.setItem('last_open_menu', parent.querySelector('.menu-link span').textContent);
             }
         });
     });
-
-    observer.observe(document.body, {
-        attributes: true
+    
+    // بازیابی آخرین منوی باز
+    const lastOpenMenu = localStorage.getItem('last_open_menu');
+    if (lastOpenMenu) {
+        document.querySelectorAll('.has-submenu').forEach(item => {
+            if (item.querySelector('.menu-link span').textContent === lastOpenMenu) {
+                item.classList.add('open');
+            }
+        });
+    }
+    
+    // حالت موبایل
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+            sidebar.classList.add('open');
+        });
+    }
+    
+    // بستن سایدبار در موبایل با کلیک بیرون
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 992 && 
+            !e.target.closest('.sidebar') && 
+            !e.target.closest('.mobile-toggle')) {
+            sidebar.classList.remove('open');
+        }
     });
+    
+    // تنظیم ارتفاع اسکرول
+    function adjustMenuHeight() {
+        const header = document.querySelector('.sidebar-header');
+        const footer = document.querySelector('.sidebar-footer');
+        const menu = document.querySelector('.sidebar-menu');
+        
+        if (header && footer && menu) {
+            const height = window.innerHeight - header.offsetHeight - footer.offsetHeight;
+            menu.style.height = height + 'px';
+        }
+    }
+    
+    adjustMenuHeight();
+    window.addEventListener('resize', adjustMenuHeight);
 });
 </script>
