@@ -1,0 +1,7 @@
+[2025-05-01 18:52:23] Error loading initial data: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'symbol' in 'field list'
+[2025-05-01 18:54:03] Error loading initial data: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'symbol' in 'field list'
+[2025-05-01 18:54:08] Error loading initial data: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'symbol' in 'field list'
+[2025-05-01 18:57:56] Error loading initial data: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'symbol' in 'field list'
+[2025-05-01 19:02:23] Error loading initial data: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'symbol' in 'field list'
+[2025-05-01 19:02:28] Error loading initial data: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'symbol' in 'field list'
+[2025-05-01 19:03:22] Error loading initial data: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'symbol' in 'field list'

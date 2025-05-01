@@ -2,10 +2,11 @@
 
 کد ناقص اومد. ادامشو بنویس. تا اینجا نوشتی.
 
-</div>
-                <div class="modal-body">
-                    <button type="button" class="btn btn-primary mb-3" id="addPriceType">
-                        <i class
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">قیمت نهایی با مالیات</label>
+                                <input type="number" class="form-control" id="final_price" readonly>
+
 
 از همینجا به بعدشو بنویس. از اول ننویسی
 
