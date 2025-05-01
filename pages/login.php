@@ -1,7 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // استفاده مستقیم از متغیر $db که قبلاً در db.php ایجاد شده
         $username = clean($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
 
@@ -10,27 +9,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $sql = "SELECT * FROM users WHERE username = ? OR email = ?";
-$stmt = Database::getInstance()->query($sql, [$username, $username]);
-        $stmt->execute([$username, $username]);
+        $result = Database::getInstance()->getRow($sql, [$username, $username]);
 
-        if (!$stmt) {
-            throw new Exception('خطا در بررسی اطلاعات کاربری');
-        }
-
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$user || !password_verify($password, $user['password'])) {
+        if (!$result) {
             throw new Exception('نام کاربری یا رمز عبور اشتباه است.');
         }
 
-        if ($user['status'] !== 'active') {
+        if (!password_verify($password, $result['password'])) {
+            throw new Exception('نام کاربری یا رمز عبور اشتباه است.');
+        }
+
+        if ($result['status'] !== 'active') {
             throw new Exception('حساب کاربری شما فعال نیست.');
         }
 
         // ذخیره اطلاعات کاربر در سشن
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['user_role'] = $user['role'];
+        $_SESSION['user_id'] = $result['id'];
+        $_SESSION['username'] = $result['username'];
+        $_SESSION['user_role'] = $result['role'];
 
         header('Location: index.php?page=dashboard');
         exit;
